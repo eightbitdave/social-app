@@ -14,11 +14,8 @@
 Route::get('/', 'WelcomeController@index');
 Route::get('home', 'HomeController@index');
 
-
-Route::get('user', 'UserController@redirect');
-Route::get('user/create', 'UserController@create');
-Route::get('user/{id}', 'UserController@index');
-Route::get('user/{id}/profile', 'UserController@showProfile');
+// User Resource Controller
+Route::resource('user', 'UserController');
 
 
 Route::get('password/email', function(){
