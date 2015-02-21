@@ -7,6 +7,12 @@ body {
 	background-color: #F2F2F2;
 }
 
+p {
+	font-family: helvetica;
+	font-size: 1.0em;
+	color: #666;
+}
+
 nav	{
 	background-color: #49C99A;
 	padding: 10px 0;
@@ -69,6 +75,12 @@ nav	{
 	font-family: helvetica;
 	font-weight: normal;
 	color: #8C8C8C;
+}
+
+.form-search {
+	padding: 20px;
+	font-size: 1.3em;
+	margin-bottom: 10px;
 }
 
 .form-button {

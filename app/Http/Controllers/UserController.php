@@ -34,7 +34,8 @@ class UserController extends Controller {
 	 */
 	public function store()
 	{
-		//
+		// TO DO: Validate and store form data in the users table.
+		return "This should store the data provided in the form";
 	}
 
 	/**

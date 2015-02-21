@@ -4,7 +4,7 @@
 	
 	<h3 id="page-title">Create an Account</h3>
 
-	{!! Form::open(['class' => 'form']) !!}
+	{!! Form::open(['route' => 'user.store', 'class' => 'form']) !!}
 		<div class="form-header-container">
 			<span class="form-header">Sign Up</span>
 		</div>

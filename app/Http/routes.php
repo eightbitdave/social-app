@@ -14,8 +14,12 @@
 Route::get('/', 'WelcomeController@index');
 Route::get('home', 'HomeController@index');
 
+
+
 // User Resource Controller
 Route::resource('user', 'UserController');
+
+
 
 
 Route::get('password/email', function(){
