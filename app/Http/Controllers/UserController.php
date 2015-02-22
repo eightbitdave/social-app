@@ -1,5 +1,6 @@
 <?php namespace App\Http\Controllers;
 
+use App\User;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
@@ -44,9 +45,9 @@ class UserController extends Controller {
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function show($id)
+	public function show($username)
 	{
-		return view('users.profile', ['user' => User::findOrFail($id)]);
+		return view('users.profile', ['user' => User::find($username)]);
 	}
 
 	/**
