@@ -47,7 +47,10 @@ class UserController extends Controller {
 	 */
 	public function show($username)
 	{
-		return view('users.profile', ['user' => User::find($username)]);
+
+		$user = User::where('username', '=', $username)->first();
+
+		return view('users.profile', ['user' => $user]);
 	}
 
 	/**
