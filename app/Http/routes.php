@@ -19,7 +19,7 @@ Route::get('home', 'HomeController@index');
 // User Resource Controller
 Route::resource('user', 'UserController');
 
-
+Route::resource('post', 'PostController');
 
 
 Route::get('password/email', function(){

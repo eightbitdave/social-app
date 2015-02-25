@@ -4,7 +4,7 @@
 	<h3 id="page-title">Search for A User</h3>
 
 	{!! Form::open(['class' => 'search-form']) !!}
-		{!! Form::text('username', "", ['class' => 'form-control form-search']) !!}
+		{!! Form::text('username', "", ['class' => 'form-control form-search', 'autocomplete' => 'off']) !!}
 		{!! Form::submit('Search', ['class' => 'form-button btn pull-right']) !!}
 	{!! Form::close() !!}
 @stop
