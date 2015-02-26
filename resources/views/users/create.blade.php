@@ -7,7 +7,18 @@
 		<div class="form-header-container">
 			<span class="form-header">Sign Up</span>
 		</div>
+
 		<div class="form-body">
+			<div class="form-group">
+				@if($errors->has())
+					<div class="alert alert-danger" role="alert">
+				   		@foreach ($errors->all() as $error)
+				        	<strong>Damn!</strong> {{ $error }}<br>
+				    	@endforeach
+				    </div>
+				@endif
+			</div>
+
 			<div class="form-group">
 				{!! Form::label('', "", []) !!}
 				{!! Form::text('name', "", ['class' => 'form-control', 'placeholder' => 'Name']) !!}
@@ -16,12 +27,12 @@
 			<div class="input-group username-group">
 				<span class="input-group-addon" id="basic-addon1">@</span>
 				{!! Form::label('', "", []) !!}
-				{!! Form::text('username', "", ['class' => 'form-control', 'placeholder' => 'Username']) !!}
+				{!! Form::text('username', "", ['class' => 'form-control', 'placeholder' => 'Username', 'maxlength' => '15']) !!}
 			</div>
 
 			<div class="form-group">
 				{!! Form::label('', "", []) !!}
-				{!! Form::password('password', ['class' => 'form-control', 'placeholder' => 'Password']) !!}
+				{!! Form::password('password', ['class' => 'form-control', 'placeholder' => 'Password', 'minlength' => '6']) !!}
 			</div>
 
 			<div class="form-group">

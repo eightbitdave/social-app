@@ -9,19 +9,11 @@
 	</head>
 
 	<body>
-		<nav>
-			<span id="nav-header">EduCode</span>
+		<nav class="navbar navbar-default">
+		    <div class="container-fluid">
+		    	<a class="navbar-brand" href="#">EduCode</a>
+		    </div>
 		</nav>
-		<br>
-		<!-- Example Pill Navigation
-
-		<ul class="nav nav-pills" style="margin-left:15px;">
-			<li role="presentation" class="active"><a href="#">Home</a></li>
-			<li role="presentation"><a href="#">Profile</a></li>
-  			<li role="presentation"><a href="#">Messages</a></li>
-		</ul>
-		
-		-->
 
 		<div id="container">
 			@yield('content')

@@ -6,7 +6,10 @@ use App\Http\Controllers\Controller;
 
 use Illuminate\Support\Facades\Crypt;
 
+use Session;
 use Request;
+use Validator;
+use Redirect;
 
 class UserController extends Controller {
 
@@ -37,17 +40,35 @@ class UserController extends Controller {
 	 */
 	public function store()
 	{
-		// TO DO: Validate and store form data in the users table.
-		$user = new User;
+		$rules = array(
+			'name'				=>	'required|regex:/^[a-zA-Z][a-zA-Z ]*$/',
+			'username'			=>	'required|regex:/^[A-Za-z0-9_]{1,15}$/',
+			'password'			=>	'required|min:6',
+			'retype-password'	=> 	'required|min:6|same:password',
+			'email'				=>	'required|email|unique:users'
+		);
 
-		$user->name = Request::get('name');
-		$user->username = Request::get('username');
-		$user->password = Crypt::encrypt(Request::get('password'));
-		$user->email = Request::get('email');
+		$validator = Validator::make(Request::all(), $rules);
 
-		$user->save();
+		if ($validator->fails()) {
+			return Redirect::back()
+				->withErrors($validator)
+				->withInput(Request::except('password'));
+		} else {
 
-		return "User Created!";
+			$user = new User;
+
+			$user->name = Request::get('name');
+			$user->username = Request::get('username');
+			$user->password = Crypt::encrypt(Request::get('password'));
+			$user->email = Request::get('email');
+
+			$user->save();
+
+			// Redirect
+			Session::flash('message', 'Successfully creater user!');
+			return Redirect::to('/auth/login');
+		}
 	}
 
 	/**

@@ -1,5 +1,6 @@
 <?php namespace App\Http\Controllers;
 
+use Auth;
 use App\Post;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
@@ -15,7 +16,11 @@ class PostController extends Controller {
 	 */
 	public function index()
 	{
-		return view('posts.index');
+		if (Auth::check()) {
+			return "Welcome!";
+		} else {
+			return view('posts.index');
+		}
 	}
 
 	/**
@@ -25,7 +30,11 @@ class PostController extends Controller {
 	 */
 	public function create()
 	{
-		//
+		if (Auth::check()) {
+			return view('posts.create');
+		} else {
+			return redirect('/auth/login');
+		}
 	}
 
 	/**
@@ -47,6 +56,15 @@ class PostController extends Controller {
 	public function show($id)
 	{
 		return view('posts.show', ['post' => Post::find($id)]);
+	}
+
+	/**
+	 * Search for 
+	 */
+	public function search($searchTerm)
+	{
+		$postList = Post::where('name', 'contains', $searchTerm);
+		return view('posts.search', ['postList' => $postList]);
 	}
 
 	/**

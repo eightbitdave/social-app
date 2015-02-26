@@ -1,6 +1,5 @@
 * { 
 	font-family: helvetica;
-	color: #000;
 }
 
 body {
@@ -31,6 +30,11 @@ nav	{
 #page-title {
 	color: #666;
 	margin: 0 0 20px 0;
+}
+
+.alert {
+	margin-top: 10px;
+	margin-bottom: 0;
 }
 
 
