@@ -12,8 +12,18 @@
 		<nav>
 			<span id="nav-header">EduCode</span>
 		</nav>
+		<br>
+		<!-- Example Pill Navigation
 
-		<div class="container">
+		<ul class="nav nav-pills" style="margin-left:15px;">
+			<li role="presentation" class="active"><a href="#">Home</a></li>
+			<li role="presentation"><a href="#">Profile</a></li>
+  			<li role="presentation"><a href="#">Messages</a></li>
+		</ul>
+		
+		-->
+
+		<div id="container">
 			@yield('content')
 		</div>
 	</body>

@@ -4,7 +4,9 @@ use App\User;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
-use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Crypt;
+
+use Request;
 
 class UserController extends Controller {
 
@@ -36,7 +38,16 @@ class UserController extends Controller {
 	public function store()
 	{
 		// TO DO: Validate and store form data in the users table.
-		return "This should store the data provided in the form";
+		$user = new User;
+
+		$user->name = Request::get('name');
+		$user->username = Request::get('username');
+		$user->password = Crypt::encrypt(Request::get('password'));
+		$user->email = Request::get('email');
+
+		$user->save();
+
+		return "User Created!";
 	}
 
 	/**
