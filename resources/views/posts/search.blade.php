@@ -14,11 +14,9 @@
 
 	<br>
 	<p>Can't find what you're looking for? Try <a href="/post/create">creating</a> one.</p>
-	<br>
-
-
 
  	@if ($results)
+ 		<br>
  		<p id="search-header">Search results:</p>
 		@foreach ($results as $result)
 			 <?php 
@@ -36,7 +34,10 @@
 
 		@endforeach
 	@else
-		<p>That search term didn't return anything, awkward.</p>
+
+		<div class="alert alert-danger" role="alert">
+			<strong>Oops!</strong> That search term didn't return anything, awkward.
+   		</div>
 	@endif
 
 
