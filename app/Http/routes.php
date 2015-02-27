@@ -11,15 +11,25 @@
 |
 */
 
+// Home/Welcome Controllers
 Route::get('/', 'WelcomeController@index');
 Route::get('home', 'HomeController@index');
 
 
-
 // User Resource Controller
 Route::resource('user', 'UserController');
+
+
+Route::get('post/search', 'PostController@search');
+Route::post('post/search', ['as' => 'post.search', 'uses' => 'PostController@search']);
+
+// Post Resource Controller
 Route::resource('post', 'PostController');
 
+
+
+
+// Password Reset Route
 Route::get('password/email', function(){
 	return "This is where you'd reset your password";
 });

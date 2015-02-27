@@ -1,11 +1,12 @@
 <?php namespace App\Http\Controllers;
 
+use DB;
 use Auth;
 use App\Post;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
-use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Request;
 
 class PostController extends Controller {
 
@@ -61,10 +62,21 @@ class PostController extends Controller {
 	/**
 	 * Search for 
 	 */
-	public function search($searchTerm)
+	public function search()
 	{
-		$postList = Post::where('name', 'contains', $searchTerm);
-		return view('posts.search', ['postList' => $postList]);
+
+		$q = Request::get('search-posts');
+		$searchTerms = explode(' ', $q);
+		$query = DB::table('posts');
+
+		foreach($searchTerms as $term)
+		{
+			$query->where('title', 'LIKE', '%' . $term . '%');
+		}
+
+		$results = $query->get();
+		// return var_dump($results);
+		return view('posts.search', ['results' => $results]);
 	}
 
 	/**

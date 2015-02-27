@@ -37,6 +37,13 @@ nav	{
 	margin-bottom: 0;
 }
 
+#search-header {
+	margin-bottom: 20px;
+}
+
+.search-result-content {
+	margin-bottom: 0px !important;
+}
 
 /**********************\
        Form CSS
