@@ -60,7 +60,9 @@ class PostController extends Controller {
 	}
 
 	/**
-	 * Search for 
+	 * Search for a post.
+	 *
+	 * @return Response
 	 */
 	public function search()
 	{

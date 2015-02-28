@@ -1,10 +1,11 @@
 <?php namespace App\Http\Controllers;
 
+use DB;
 use Auth;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
-use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Request;
 
 class GroupController extends Controller {
 
@@ -51,6 +52,33 @@ class GroupController extends Controller {
 	public function show($id)
 	{
 		//
+	}
+
+	/**
+	 * Search for a post.
+	 *
+	 * @return Response
+	 */
+	public function search()
+	{
+		if (Request::get('search-groups'))
+		{
+			$q = Request::get('search-groups');
+			$searchTerms = explode(' ', $q);
+			$query = DB::table('groups');
+
+			foreach($searchTerms as $term)
+			{
+				$query->where('name', 'LIKE', '%' . $term . '%');
+			}
+
+			$results = $query->get();
+
+			// Return results to posts.search view
+			return view('groups.search', ['results' => $results]);
+		}
+
+		return view('groups.search', []);
 	}
 
 	/**
