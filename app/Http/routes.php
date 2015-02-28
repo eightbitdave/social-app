@@ -25,7 +25,7 @@ Route::post('post/search', ['as' => 'post.search', 'uses' => 'PostController@sea
 
 // Post Resource Controller
 Route::resource('post', 'PostController');
-
+Route::resource('group', 'GroupController');
 
 
 

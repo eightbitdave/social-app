@@ -1,14 +1,12 @@
 <?php namespace App\Http\Controllers;
 
-use DB;
 use Auth;
-use App\Post;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
-use Illuminate\Support\Facades\Request;
+use Illuminate\Http\Request;
 
-class PostController extends Controller {
+class GroupController extends Controller {
 
 	/**
 	 * Display a listing of the resource.
@@ -17,11 +15,7 @@ class PostController extends Controller {
 	 */
 	public function index()
 	{
-		if (Auth::check()) {
-			return "Welcome!";
-		} else {
-			return view('posts.index');
-		}
+		return view('groups.index');
 	}
 
 	/**
@@ -32,7 +26,7 @@ class PostController extends Controller {
 	public function create()
 	{
 		if (Auth::check()) {
-			return view('posts.create');
+			return view('groups.create');
 		} else {
 			return redirect('/auth/login');
 		}
@@ -56,32 +50,7 @@ class PostController extends Controller {
 	 */
 	public function show($id)
 	{
-		return view('posts.show', ['post' => Post::find($id)]);
-	}
-
-	/**
-	 * Search for 
-	 */
-	public function search()
-	{
-		if (Request::get('search-posts'))
-		{
-			$q = Request::get('search-posts');
-			$searchTerms = explode(' ', $q);
-			$query = DB::table('posts');
-
-			foreach($searchTerms as $term)
-			{
-				$query->where('title', 'LIKE', '%' . $term . '%');
-			}
-
-			$results = $query->get();
-
-			// Return results to posts.search view
-			return view('posts.search', ['results' => $results]);
-		}
-
-		return view('posts.search', []);
+		//
 	}
 
 	/**

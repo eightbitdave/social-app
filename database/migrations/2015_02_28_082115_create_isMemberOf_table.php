@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreatePostsTable extends Migration {
+class CreateIsMemberOfTable extends Migration {
 
 	/**
 	 * Run the migrations.
@@ -12,14 +12,12 @@ class CreatePostsTable extends Migration {
 	 */
 	public function up()
 	{
-		Schema::create('posts', function(Blueprint $table)
-		{
-			$table->increments('id')->unique();
-			$table->string('title', 60);
-			$table->string('content');
-			$table->timestamps();
+		Schema::create('isMemberOf', function(Blueprint $table){
 			$table->integer('user_id')->unsigned();
 			$table->foreign('user_id')->references('id')->on('users');
+			$table->integer('group_id')->unsigned();
+			$table->foreign('group_id')->references('id')->on('groups');
+			$table->timestamps();
 		});
 	}
 
@@ -30,7 +28,7 @@ class CreatePostsTable extends Migration {
 	 */
 	public function down()
 	{
-		Schema::drop('posts');
+		Schema::drop('isMemberOf');
 	}
 
 }

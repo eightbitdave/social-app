@@ -13,28 +13,29 @@
 	{!! Form::close() !!}
 
 	<br>
-	<p>Can't find what you're looking for? Try <a href="/post/create">creating</a> one.</p>
+	<p>Can't find what you're looking for? Why not <a href="/post/create">create</a> a post.</p>
 
- 	@if ($results)
- 		<br>
- 		<p id="search-header">Search results:</p>
-		@foreach ($results as $result)
-			 <?php 
-		 		$string = $result->content;
-		 		$string = strip_tags($string);
+ 	@if (isset($results) && !empty($results))
+ 		<div id="search-results-container">
+	 		<p id="search-header">Search results:</p>
+			@foreach ($results as $result)
+				 <?php 
+			 		$string = $result->content;
+			 		$string = strip_tags($string);
 
-		 		if (strlen($string) > 100){
-		 			$stringCut = substr($string, 0, 100);
-		 		}
-	 		?>
-			<h4><a href="/post/{{$result->id}}">{{$result->title}}</a></h4>
-			<p class="search-result-content">{{ $string }}...</p>
-			<a class="pull-right" href="/user/{{$result->username}}">&#64;{{$result->username}}</a>
-			<div class="clear"></div>
-
-		@endforeach
-	@else
-
+			 		if (strlen($string) > 100){
+			 			$stringCut = substr($string, 0, 100);
+			 		}
+		 		?>
+		 		<div class="search-result-item">
+					<h4><a href="/post/{{$result->id}}">{{$result->title}}</a></h4>
+					<p class="search-result-content">{{ $string }}...</p>
+					<a class="pull-right" href="/user/{{$result->username}}">&#64;{{$result->username}}</a>
+					<div class="clear"></div>
+				</div>
+			@endforeach
+		</div>
+	@elseif (isset($results) && empty($results))
 		<div class="alert alert-danger" role="alert">
 			<strong>Oops!</strong> That search term didn't return anything, awkward.
    		</div>
