@@ -10,6 +10,7 @@ use Session;
 use Request;
 use Validator;
 use Redirect;
+use Hash;
 
 class UserController extends Controller {
 
@@ -60,7 +61,7 @@ class UserController extends Controller {
 
 			$user->name = Request::get('name');
 			$user->username = Request::get('username');
-			$user->password = Crypt::encrypt(Request::get('password'));
+			$user->password = Hash::make(Request::get('password'));
 			$user->email = Request::get('email');
 
 			$user->save();

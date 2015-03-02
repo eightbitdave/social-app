@@ -1,0 +1,36 @@
+@extends('layouts.default')
+
+@section('content')
+	<h3 id="page-title">Create a Post</h3>
+
+		{!! Form::open(['route' => 'post.store', 'class' => 'form']) !!}
+		<div class="form-header-container">
+			<span class="form-header">Create Post</span>
+		</div>
+
+		<div class="form-body">
+			<div class="form-group">
+				@if($errors->has())
+					<div class="alert alert-danger" role="alert">
+				   		@foreach ($errors->all() as $error)
+				        	<strong>Oops!</strong> {{ $error }}<br>
+				    	@endforeach
+				    </div>
+				@endif
+			</div>
+
+			<div class="form-group">
+				{!! Form::label('', "", []) !!}
+				{!! Form::text('title', "", ['class' => 'form-control', 'placeholder' => 'Name']) !!}
+			</div>
+
+			<div class="form-group form-last">
+				{!! Form::label('', "", []) !!}
+				{!! Form::textarea('content', "", ['class' => 'form-control', 'placeholder' => 'Content']) !!}
+			</div>
+
+			{!! Form::submit('Create Post', ['class' => 'form-button btn pull-right']) !!}
+			<div class="clear"></div>
+		</div>
+	{!! Form::close() !!}
+@stop

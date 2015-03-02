@@ -31,10 +31,11 @@ class PostController extends Controller {
 	 */
 	public function create()
 	{
-		if (Auth::check()) {
+		if(Auth::check())
+		{
 			return view('posts.create');
 		} else {
-			return redirect('/auth/login');
+			return view('auth.login');
 		}
 	}
 
@@ -45,7 +46,7 @@ class PostController extends Controller {
 	 */
 	public function store()
 	{
-		//
+		return "Stored data! (not really).";
 	}
 
 	/**

@@ -16,9 +16,6 @@ Route::get('/', 'WelcomeController@index');
 Route::get('home', 'HomeController@index');
 
 
-
-
-
 // User Routes
 Route::resource('user', 'UserController');
 
