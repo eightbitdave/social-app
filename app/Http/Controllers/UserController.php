@@ -66,8 +66,8 @@ class UserController extends Controller {
 			$user->save();
 
 			// Redirect
-			Session::flash('message', 'Successfully creater user!');
-			return Redirect::to('/auth/login');
+			Session::flash('message', 'Account created!');
+			return Redirect::to('auth/login');
 		}
 	}
 
