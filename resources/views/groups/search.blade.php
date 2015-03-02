@@ -3,9 +3,6 @@
 @section('content')
 	<h3 id="page-title">Search Groups</h3>
 
-
-	<!-- NEEDS WORK -->
-	
 	{!! Form::open(['route' => 'group.search', 'class' => 'search-form']) !!}
 		{!! Form::text('search-groups', "", ['class' => 'form-control form-search', 'autocomplete' => 'off', 'placeholder' => 'Search Groups']) !!}
 		{!! Form::submit('Search', ['class' => 'form-button btn pull-right']) !!}
@@ -37,7 +34,7 @@
 		</div>
 	@elseif (isset($results) && empty($results))
 		<div class="alert alert-danger" role="alert">
-			<strong>Oops!</strong> That search term didn't return anything, awkward.
+			<strong>Oops!</strong> That search term didn't return anything.
    		</div>
 	@endif
 
