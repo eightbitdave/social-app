@@ -16,6 +16,9 @@ Route::get('/', 'WelcomeController@index');
 Route::get('home', 'HomeController@index');
 
 
+
+
+
 // User Routes
 Route::resource('user', 'UserController');
 
@@ -25,10 +28,17 @@ Route::get('post/search', 'PostController@search');
 Route::post('post/search', ['as' => 'post.search', 'uses' => 'PostController@search']);
 Route::resource('post', 'PostController');
 
+
 // Group Routes
 Route::get('group/search', 'GroupController@search');
 Route::post('group/search', ['as' => 'group.search', 'uses' => 'GroupController@search']);
 Route::resource('group', 'GroupController');
+
+
+
+
+
+
 
 
 

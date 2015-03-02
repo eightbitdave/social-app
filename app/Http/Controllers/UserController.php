@@ -41,8 +41,8 @@ class UserController extends Controller {
 	public function store()
 	{
 		$rules = array(
-			'name'				=>	'required|regex:/^[a-zA-Z][a-zA-Z ]*$/',
-			'username'			=>	'required|regex:/^[A-Za-z0-9_]{1,15}$/',
+			'name'				=>	'required|min:3|regex:/^[a-zA-Z][a-zA-Z ]*$/',
+			'username'			=>	'required|min:3|unique:users|regex:/^[A-Za-z0-9_]{1,15}$/',
 			'password'			=>	'required|min:6',
 			'retype-password'	=> 	'required|min:6|same:password',
 			'email'				=>	'required|email|unique:users'

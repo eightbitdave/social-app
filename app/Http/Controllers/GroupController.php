@@ -51,7 +51,7 @@ class GroupController extends Controller {
 	 */
 	public function show($id)
 	{
-		//
+		// Needs work.
 	}
 
 	/**
