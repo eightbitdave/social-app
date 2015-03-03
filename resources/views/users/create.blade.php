@@ -45,8 +45,7 @@
 				{!! Form::email('email', "", ['class' => 'form-control', 'placeholder' => 'Email']) !!}
 			</div>
 
-			{!! Form::submit('Sign Up', ['class' => 'form-button btn']) !!}
-			<a class="forgot" href="{{ URL::to('password/email')}}">Forgot your password?</a>
+			{!! Form::submit('Sign Up', ['class' => 'form-button btn btn-block']) !!}
 		</div>
 	{!! Form::close() !!}
 @stop

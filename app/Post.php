@@ -8,6 +8,11 @@ class Post extends Model implements AuthenticatableContract {
 
 	use Authenticatable;
 
+	public function getAuthor()
+	{
+		return $this->user_id;
+	}
+
 	/**
 	 * The database table used by the model.
 	 *

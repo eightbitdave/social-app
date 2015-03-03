@@ -10,6 +10,17 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 
 	use Authenticatable, CanResetPassword;
 
+
+	public function getId()
+	{
+		return $this->id;
+	}
+
+	public function getUsername()
+	{
+		return $this->username;
+	}
+
 	/**
 	 * The database table used by the model.
 	 *

@@ -2,6 +2,10 @@
 
 use DB;
 use Auth;
+use Session;
+use Validator;
+use Redirect;
+
 use App\Post;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
@@ -17,11 +21,7 @@ class PostController extends Controller {
 	 */
 	public function index()
 	{
-		if (Auth::check()) {
-			return "Welcome!";
-		} else {
-			return view('posts.index');
-		}
+		return view('posts.index');
 	}
 
 	/**
@@ -46,7 +46,41 @@ class PostController extends Controller {
 	 */
 	public function store()
 	{
-		return "Stored data! (not really).";
+		if (Auth::check()) {
+
+			$rules = array(
+				'title' 	=>	'required|min:1|',
+				'content'	=>	'required|min:3|'
+			);
+
+			$validator = Validator::make(Request::all(), $rules);
+
+			if ($validator->fails()) {
+				return Redirect::back()
+					->withErrors($validator)
+					->withInput();
+			} else {
+				$post = new Post;
+
+				$post->title = Request::get('title');
+				$post->content = Request::get('content');
+				$post->user_id = Auth::user()->getId();
+				$post->username = Auth::user()->getUsername();
+
+				$post->save();
+
+				
+				$username =  Auth::user()->getUsername();
+
+				// Redirect
+				Session::flash('message', 'Post Created!');
+				return Redirect::to("/user/$username");
+			}
+		} else {
+			// Redirect with message
+			Session::flash('message_info', 'You need to log in first!');
+			return Redirect::to('auth/login');
+		}
 	}
 
 	/**
@@ -57,6 +91,14 @@ class PostController extends Controller {
 	 */
 	public function show($id)
 	{
+		if (Auth::check()) {
+			$userid = Auth::user()->getId();
+
+			if (Post::whereRaw("id = ? and user_id = ?",[$id, $userid])->get() == '[]') {
+				return view('posts.author', ['post' => Post::find($id)]);
+			}
+		}
+
 		return view('posts.show', ['post' => Post::find($id)]);
 	}
 

@@ -21,12 +21,12 @@
 
 			<div class="form-group">
 				{!! Form::label('', "", []) !!}
-				{!! Form::text('title', "", ['class' => 'form-control', 'placeholder' => 'Name']) !!}
+				{!! Form::text('title', "", ['class' => 'form-control', 'placeholder' => 'Title', 'minlength' => '1']) !!}
 			</div>
 
 			<div class="form-group form-last">
 				{!! Form::label('', "", []) !!}
-				{!! Form::textarea('content', "", ['class' => 'form-control', 'placeholder' => 'Content']) !!}
+				{!! Form::textarea('content', "", ['class' => 'form-control', 'placeholder' => 'Content', 'minlength' => '3']) !!}
 			</div>
 
 			{!! Form::submit('Create Post', ['class' => 'form-button btn pull-right']) !!}

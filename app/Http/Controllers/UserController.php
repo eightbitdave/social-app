@@ -4,13 +4,12 @@ use App\User;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
-use Illuminate\Support\Facades\Crypt;
-
 use Session;
 use Request;
 use Validator;
 use Redirect;
 use Hash;
+use Auth;
 
 class UserController extends Controller {
 
@@ -31,7 +30,12 @@ class UserController extends Controller {
 	 */
 	public function create()
 	{
-		return view('users.create');
+		if (Auth::check()) {
+			Session::flash('info_message', 'You are already logged into an account!');
+			return Redirect::route('user.index');
+		} else {
+			return view('users.create');
+		}
 	}
 
 	/**
