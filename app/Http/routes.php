@@ -1,6 +1,6 @@
 <?php
 
-// Home/Welcome Controllers
+// Home&Welcome Controllers
 Route::get('/', 'WelcomeController@index');
 Route::get('home', 'HomeController@index');
 

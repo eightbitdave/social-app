@@ -132,12 +132,15 @@ class PostsController extends Controller {
 	{
 		if (Auth::check()) {
 
-			$post = Post::findOrFail($id);
+			$post = Post::find($id);
 
-			if(Auth::user()->getId() == $post->user_id) {
-				return view('posts.edit', ['post' => $post]);
+			if ($post == NULL) {
+				Session::flash('info_message', 'Not a valid post!');
+				return redirect(route('posts.index'));
+			} elseif (Auth::user()->getId() == $post->user_id) {
+			 	return view('posts.edit', ['post' => $post]);
 			} else {
-				Session::flash('warn_message', 'You are not authorised to do that!');
+				Session::flash('info_message', 'You are not authorised to do that!');
 				return Redirect::to(route('posts.show', [$post->id]));
 			}
 		} else {

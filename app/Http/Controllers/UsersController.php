@@ -10,6 +10,9 @@ use Validator;
 use Redirect;
 use Hash;
 use Auth;
+use DB;
+
+use App\Post; //test
 
 class UsersController extends Controller {
 
@@ -84,10 +87,12 @@ class UsersController extends Controller {
 	 */
 	public function show($username)
 	{
-
 		$user = User::where('username', '=', $username)->first();
 
-		return view('users.profile', ['user' => $user]);
+		$posts = DB::table('posts')->where('user_id', $user->id)->get();
+
+
+		return view('users.show', compact('user', 'posts'));
 	}
 
 	/**
@@ -96,9 +101,29 @@ class UsersController extends Controller {
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function edit($id)
+	public function edit($username)
 	{
-		//
+
+		if (Auth::check())
+		{
+			$user = User::where('username', '=', $username)->first();
+
+			if ($user) {
+				if (Auth::user()->getId() == $user->id) {
+					return view('users.edit', compact('user'));
+				} else {
+					Session::flash('info_message', "You don't have the privilege!");
+					return redirect(route('users.show', $user->username));
+				}
+			} else {
+				Session::flash('info_message', 'Invalid user!');
+				return Redirect::back();
+			}
+
+		} else {
+			Session::flash('info_message', 'Please log in first!');
+			return redirect(route('auth.login'));
+		}
 	}
 
 	/**
@@ -107,9 +132,35 @@ class UsersController extends Controller {
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function update($id)
+	public function update($username)
 	{
-		//
+		if (Auth::check()) {
+
+			$user = User::where('username', '=', $username)->first();
+
+			$rules = array(
+				'name' => 'required|min:3|regex:/^[a-zA-Z][a-zA-Z ]*$/'
+			);
+
+			$validator = Validator::make(Request::all(), $rules);
+
+			if ($validator->fails()) {
+
+				return Redirect::back()
+					->withErrors($validator)
+					->withInput();
+
+			} else {
+
+				$user->name = Request::get('name');
+
+				$user->save();
+
+				// Redirect
+				Session::flash('message', 'Successfully updated!');
+				return redirect(route('users.show', [$user->username]));
+			}
+		}
 	}
 
 	/**

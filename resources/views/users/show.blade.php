@@ -7,4 +7,14 @@
 	@else
 		<h3>No user with that username.</h3>
 	@endif
+
+	@if ($posts)
+		Posts:<br>
+		@foreach ($posts as $post)
+			<a href="/posts/{{$post->id}}">{{ $post->title }}</a>
+		@endforeach
+	@else
+		This user has no posts!
+	@endif
+
 @stop
