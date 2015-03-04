@@ -3,7 +3,7 @@
 @section('content')
 	<h3 id="page-title">Update your Post</h3>
 
-	{!! Form::model($post, ['route' => ['post.update', $post->id], 'method' => 'PUT']) !!}
+	{!! Form::model($post, ['route' => ['posts.update', $post->id], 'method' => 'PUT']) !!}
 		<div class="form-header-container">
 			<span class="form-header">Update Post</span>
 		</div>
@@ -34,7 +34,7 @@
 		</div>
 	{!! Form::close() !!}
 	<br>
-	{!! Form::open(['method' => 'DELETE', 'route' => ['post.destroy', $post->id]]) !!}
+	{!! Form::open(['method' => 'DELETE', 'route' => ['posts.destroy', $post->id]]) !!}
 		<div class="form-group">
 			{!! Form::submit('Delete', ['class' => 'btn btn-block btn-danger']) !!}
 		</div>

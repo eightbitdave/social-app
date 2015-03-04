@@ -6,19 +6,19 @@ Route::get('home', 'HomeController@index');
 
 
 // User Routes
-Route::resource('user', 'UserController');
+Route::resource('users', 'UsersController');
 
 
 // Post Routes
-Route::get('post/search', 'PostController@search');
-Route::post('post/search', ['as' => 'post.search', 'uses' => 'PostController@search']);
-Route::resource('post', 'PostController');
+Route::get('posts/search', 'PostsController@search');
+Route::post('posts/search', ['as' => 'posts.search', 'uses' => 'PostsController@search']);
+Route::resource('posts', 'PostsController');
 
 
 // Group Routes
-Route::get('group/search', 'GroupController@search');
-Route::post('group/search', ['as' => 'group.search', 'uses' => 'GroupController@search']);
-Route::resource('group', 'GroupController');
+Route::get('groups/search', 'GroupsController@search');
+Route::post('groups/search', ['as' => 'groups.search', 'uses' => 'GroupsController@search']);
+Route::resource('groups', 'GroupsController');
 
 
 
@@ -34,4 +34,4 @@ Route::controllers([
 	'password' => 'Auth\PasswordController',
 ]);
 
-// Route::post('auth/login', ['as' => 'auth.login', 'uses' => 'AuthController']);
+Route::post('auth/login', ['as' => 'auth.login', 'uses' => 'AuthController']);

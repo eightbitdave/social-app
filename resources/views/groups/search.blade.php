@@ -3,7 +3,7 @@
 @section('content')
 	<h3 id="page-title">Search Groups</h3>
 
-	{!! Form::open(['route' => 'group.search', 'class' => 'search-form']) !!}
+	{!! Form::open(['route' => 'groups.search', 'class' => 'search-form']) !!}
 		{!! Form::text('search-groups', "", ['class' => 'form-control form-search', 'autocomplete' => 'off', 'placeholder' => 'Search Groups']) !!}
 		{!! Form::submit('Search', ['class' => 'form-button btn pull-right']) !!}
 		<div class="clear"></div>
@@ -25,9 +25,9 @@
 			 		}
 		 		?>
 		 		<div class="search-result-item">
-					<h4><a href="/group/{{$result->id}}">{{$result->name}}</a></h4>
+					<h4><a href="/groups/{{$result->id}}">{{$result->name}}</a></h4>
 					<p class="search-result-content">{{ $string }}...</p>
-					<a class="pull-right" href="/user/{{$result->username}}">&#64;{{$result->username}}</a>
+					<a class="pull-right" href="/users/{{$result->username}}">&#64;{{$result->username}}</a>
 					<div class="clear"></div>
 				</div>
 			@endforeach

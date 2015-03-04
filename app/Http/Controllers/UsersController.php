@@ -11,7 +11,7 @@ use Redirect;
 use Hash;
 use Auth;
 
-class UserController extends Controller {
+class UsersController extends Controller {
 
 	/**
 	 * Display a listing of the resource.
@@ -32,7 +32,7 @@ class UserController extends Controller {
 	{
 		if (Auth::check()) {
 			Session::flash('info_message', 'You are already logged into an account!');
-			return Redirect::route('user.index');
+			return Redirect::route('users.index');
 		} else {
 			return view('users.create');
 		}

@@ -6,14 +6,14 @@
 
 	<!-- NEEDS WORK -->
 	
-	{!! Form::open(['route' => 'post.search', 'class' => 'search-form']) !!}
+	{!! Form::open(['route' => 'posts.search', 'class' => 'search-form']) !!}
 		{!! Form::text('search-posts', "", ['class' => 'form-control form-search', 'autocomplete' => 'off', 'placeholder' => 'Search Posts']) !!}
 		{!! Form::submit('Search', ['class' => 'form-button btn pull-right']) !!}
 		<div class="clear"></div>
 	{!! Form::close() !!}
 
 	<br>
-	<p>Can't find what you're looking for? Why not <a href="/post/create">create</a> a post.</p>
+	<p>Can't find what you're looking for? Why not <a href="/posts/create">create</a> a post.</p>
 
  	@if (isset($results) && !empty($results))
  		<div id="search-results-container">
@@ -28,9 +28,9 @@
 			 		}
 		 		?>
 		 		<div class="search-result-item">
-					<h4><a href="/post/{{$result->id}}">{{$result->title}}</a></h4>
+					<h4><a href="/posts/{{$result->id}}">{{$result->title}}</a></h4>
 					<p class="search-result-content">{{ $string }}...</p>
-					<a class="pull-right" href="/user/{{$result->username}}">&#64;{{$result->username}}</a>
+					<a class="pull-right" href="/users/{{$result->username}}">&#64;{{$result->username}}</a>
 					<div class="clear"></div>
 				</div>
 			@endforeach

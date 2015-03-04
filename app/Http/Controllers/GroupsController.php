@@ -7,7 +7,7 @@ use App\Http\Controllers\Controller;
 
 use Illuminate\Support\Facades\Request;
 
-class GroupController extends Controller {
+class GroupsController extends Controller {
 
 	/**
 	 * Display a listing of the resource.

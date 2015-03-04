@@ -12,7 +12,7 @@ use App\Http\Controllers\Controller;
 
 use Illuminate\Support\Facades\Request;
 
-class PostController extends Controller {
+class PostsController extends Controller {
 
 	/**
 	 * Display a listing of the resource.
@@ -35,7 +35,7 @@ class PostController extends Controller {
 		{
 			return view('posts.create');
 		} else {
-			return view('auth.login');
+			return redirect(route('auth.login'));
 		}
 	}
 
@@ -75,7 +75,7 @@ class PostController extends Controller {
 				// Redirect
 				Session::flash('message', 'Post Created!');
 				// return Redirect::to("/user/$username");
-				return Redirect::to(route('user.show', [$username]));
+				return Redirect::to(route('users.show', [$username]));
 			}
 		} else {
 			// Redirect with message
@@ -138,7 +138,7 @@ class PostController extends Controller {
 				return view('posts.edit', ['post' => $post]);
 			} else {
 				Session::flash('warn_message', 'You are not authorised to do that!');
-				return Redirect::to(route('post.show', [$post->id]));
+				return Redirect::to(route('posts.show', [$post->id]));
 			}
 		} else {
 			Session::flash('info_message', 'You need to log in first!');
@@ -179,7 +179,7 @@ class PostController extends Controller {
 
 				// Redirect
 				Session::flash('message', 'Post updated!');
-				return Redirect::to(route('post.show', [$post->id]));
+				return Redirect::to(route('posts.show', [$post->id]));
 			}
 		}
 	}
@@ -197,7 +197,7 @@ class PostController extends Controller {
 		$post->delete();
 
 		Session::flash('message', 'Post deleted!');
-		return redirect(route('user.show', [$post->username]));
+		return redirect(route('users.show', [$post->username]));
 	}
 
 }

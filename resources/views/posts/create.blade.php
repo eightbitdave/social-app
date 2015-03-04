@@ -3,7 +3,7 @@
 @section('content')
 	<h3 id="page-title">Create a Post</h3>
 
-		{!! Form::open(['route' => 'post.store', 'class' => 'form']) !!}
+		{!! Form::open(['route' => 'posts.store', 'class' => 'form']) !!}
 		<div class="form-header-container">
 			<span class="form-header">Create Post</span>
 		</div>
