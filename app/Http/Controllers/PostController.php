@@ -74,7 +74,8 @@ class PostController extends Controller {
 
 				// Redirect
 				Session::flash('message', 'Post Created!');
-				return Redirect::to("/user/$username");
+				// return Redirect::to("/user/$username");
+				return Redirect::to(route('user.show', [$username]));
 			}
 		} else {
 			// Redirect with message
@@ -91,14 +92,6 @@ class PostController extends Controller {
 	 */
 	public function show($id)
 	{
-		if (Auth::check()) {
-			$userid = Auth::user()->getId();
-
-			if (Post::whereRaw("id = ? and user_id = ?",[$id, $userid])->get() == '[]') {
-				return view('posts.author', ['post' => Post::find($id)]);
-			}
-		}
-
 		return view('posts.show', ['post' => Post::find($id)]);
 	}
 
@@ -137,7 +130,20 @@ class PostController extends Controller {
 	 */
 	public function edit($id)
 	{
-		//
+		if (Auth::check()) {
+
+			$post = Post::findOrFail($id);
+
+			if(Auth::user()->getId() == $post->user_id) {
+				return view('posts.edit', ['post' => $post]);
+			} else {
+				Session::flash('warn_message', 'You are not authorised to do that!');
+				return Redirect::to(route('post.show', [$post->id]));
+			}
+		} else {
+			Session::flash('info_message', 'You need to log in first!');
+			return Redirect::to(route('auth.login'));
+		}
 	}
 
 	/**
@@ -148,7 +154,34 @@ class PostController extends Controller {
 	 */
 	public function update($id)
 	{
-		//
+
+		if (Auth::check()) {
+
+			$post = Post::findOrFail($id);
+
+			$rules = array(
+				'title' 	=>	'required|min:1|',
+				'content'	=>	'required|min:3|'
+			);
+
+			$validator = Validator::make(Request::all(), $rules);
+
+			if ($validator->fails()) {
+				return Redirect::back()
+					->withErrors($validator)
+					->withInput();
+			} else {
+
+				$post->title = Request::get('title');
+				$post->content = Request::get('content');
+
+				$post->save();
+
+				// Redirect
+				Session::flash('message', 'Post updated!');
+				return Redirect::to(route('post.show', [$post->id]));
+			}
+		}
 	}
 
 	/**
@@ -159,7 +192,12 @@ class PostController extends Controller {
 	 */
 	public function destroy($id)
 	{
-		//
+		$post = Post::find($id);
+
+		$post->delete();
+
+		Session::flash('message', 'Post deleted!');
+		return redirect(route('user.show', [$post->username]));
 	}
 
 }
