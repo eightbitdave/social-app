@@ -28,5 +28,12 @@
 			{!! Form::submit('Edit', ['class' => 'form-button btn btn-block']) !!}
 		</div>
 	{!! Form::close() !!}
+	<br>
+	{!! Form::open(['method' => 'DELETE', 'route' => ['users.destroy', $user->id]]) !!}
+		<div class="form-group">
+			{!! Form::submit('Delete Account', ['class' => 'btn btn-block btn-danger']) !!}
+		</div>
+		<div class="clear"></div>
+	{!! Form::close() !!}
 
 @stop

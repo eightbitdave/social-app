@@ -200,7 +200,28 @@ class UsersController extends Controller {
 	 */
 	public function destroy($id)
 	{
-		//
+		if (Auth::check()) {
+
+			$user = User::find($id);
+
+			if (Auth::user()->getId() == $user->id) {
+
+				// Logout
+				Auth::logout();
+
+				$user->delete();
+
+				// Redirect
+				Session::flash('info_message', 'Account Deleted!');
+				return redirect(route('users.index'));
+			} else {
+				Session::flash('info_message', 'You do not have that permission');
+				return redirect(route('users.show', [$id]));
+			}
+		} else {
+			Session::flash('info_message', 'Please log in first');
+			return redirect(route('auth.login'));
+		}
 	}
 
 }

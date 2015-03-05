@@ -14,7 +14,10 @@ class AddUsernameToPostsTable extends Migration {
 	{
 		Schema::table('posts', function($table){
 			$table->string('username');
-			$table->foreign('username')->references('username')->on('users');
+			$table->foreign('username')
+				  ->references('username')
+				  ->on('users')
+				  ->onDelete('cascade');
 		});
 	}
 
@@ -26,7 +29,7 @@ class AddUsernameToPostsTable extends Migration {
 	public function down()
 	{
 		Schema::table('posts', function($table){
-			$table->dropColumn('username');
+			$table->dropForeign('posts_username_foreign');
 		});
 	}
 
