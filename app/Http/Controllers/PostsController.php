@@ -158,10 +158,10 @@ class PostsController extends Controller {
 	public function update($id)
 	{
 
+
 		if (Auth::check()) {
 
-			$post = Post::findOrFail($id);
-
+			
 			$rules = array(
 				'title' 	=>	'required|min:1|',
 				'content'	=>	'required|min:3|'
@@ -174,6 +174,8 @@ class PostsController extends Controller {
 					->withErrors($validator)
 					->withInput();
 			} else {
+				
+				$post = Post::findOrFail($id);
 
 				$post->title = Request::get('title');
 				$post->content = Request::get('content');
@@ -184,6 +186,9 @@ class PostsController extends Controller {
 				Session::flash('message', 'Post updated!');
 				return Redirect::to(route('posts.show', [$post->id]));
 			}
+		} else {
+			Session::flash('info_message', 'You do not have that permission!');
+			return redirect(route('posts.show', [$id]));
 		}
 	}
 
@@ -195,12 +200,26 @@ class PostsController extends Controller {
 	 */
 	public function destroy($id)
 	{
-		$post = Post::find($id);
+		if (Auth::check()) {
 
-		$post->delete();
+			$post = Post::find($id);
 
-		Session::flash('message', 'Post deleted!');
-		return redirect(route('users.show', [$post->username]));
+			if (Auth::user()->getId() == $post->user_id) {
+
+				$post->delete();
+
+				// Redirect
+				Session::flash('message', 'Post deleted!');
+				return redirect(route('users.show', [$post->username]));
+			} else {
+				Session::flash('info_message', 'You do not have that permission!');
+				return redirect(route('posts.show', [$id]));
+			}
+			
+		} else {
+			Session::flash('info_message', 'Please log in first!');
+			return redirect(route('auth.login'));
+		}
 	}
 
 }

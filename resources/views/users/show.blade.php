@@ -11,8 +11,9 @@
 	@if ($posts)
 		Posts:<br>
 		@foreach ($posts as $post)
-			<a href="/posts/{{$post->id}}">{{ $post->title }}</a>
+			<a href="/posts/{{$post->id}}">{{ $post->title }}</a><br>
 		@endforeach
+		<br><br><a class="btn btn-primary btn-lg btn-block" href="/users/{{$user->username}}/posts">All Posts</a>
 	@else
 		This user has no posts!
 	@endif

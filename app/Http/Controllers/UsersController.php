@@ -89,10 +89,39 @@ class UsersController extends Controller {
 	{
 		$user = User::where('username', '=', $username)->first();
 
-		$posts = DB::table('posts')->where('user_id', $user->id)->get();
+		if ($user) {
 
+			$posts = $user->posts->take(5);
+			// $posts = DB::table('posts')->where('user_id', $user->id)->get();
 
-		return view('users.show', compact('user', 'posts'));
+			return view('users.show', compact('user', 'posts'));
+		} else {
+			Session::flash('info_message', 'User does not exist!');
+			return redirect(route('users.index'));
+		}
+	}
+
+	/**
+	 * Show the posts created by that user.
+	 *
+	 * @param int $username
+	 * @return Response
+	 */
+
+	public function showPosts($username)
+	{
+		$user = User::where('username', '=', $username)->first();
+
+		if ($user)
+		{
+			$posts = $user->posts;
+
+			return view('users.showposts', compact('user', 'posts'));
+		} else {
+			Session::flash('info_message', 'No user with that username!');
+			return redirect(route('users.index'));
+		}
+
 	}
 
 	/**

@@ -6,6 +6,7 @@ Route::get('home', 'HomeController@index');
 
 
 // User Routes
+Route::get('users/{username}/posts', 'UsersController@showPosts');
 Route::resource('users', 'UsersController');
 
 

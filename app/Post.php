@@ -34,4 +34,10 @@ class Post extends Model implements AuthenticatableContract {
 	 */
 	protected $hidden = [];
 
+
+	public function owner()
+	{
+		return $this->belongsTo('App\User');
+	}
+
 }
