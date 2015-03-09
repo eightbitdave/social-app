@@ -3,8 +3,8 @@
 use DB;
 use Auth;
 use Session;
-use Validator;
 use Redirect;
+use Validator;
 
 use App\Post;
 use App\Http\Requests;
@@ -13,6 +13,11 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Request;
 
 class PostsController extends Controller {
+
+	public function __construct()
+	{
+		$this->middleware('auth', ['except' => ['index', 'search', 'show']]);
+	}
 
 	/**
 	 * Display a listing of the resource.
@@ -31,12 +36,7 @@ class PostsController extends Controller {
 	 */
 	public function create()
 	{
-		if(Auth::check())
-		{
-			return view('posts.create');
-		} else {
-			return redirect(route('auth.login'));
-		}
+		return view('posts.create');
 	}
 
 	/**
@@ -46,41 +46,34 @@ class PostsController extends Controller {
 	 */
 	public function store()
 	{
-		if (Auth::check()) {
+		$rules = array(
+			'title' 	=>	'required|min:1|',
+			'content'	=>	'required|min:3|'
+		);
 
-			$rules = array(
-				'title' 	=>	'required|min:1|',
-				'content'	=>	'required|min:3|'
-			);
+		$validator = Validator::make(Request::all(), $rules);
 
-			$validator = Validator::make(Request::all(), $rules);
-
-			if ($validator->fails()) {
-				return Redirect::back()
-					->withErrors($validator)
-					->withInput();
-			} else {
-				$post = new Post;
-
-				$post->title = Request::get('title');
-				$post->content = Request::get('content');
-				$post->user_id = Auth::user()->getId();
-				$post->username = Auth::user()->getUsername();
-
-				$post->save();
-
-				
-				$username =  Auth::user()->getUsername();
-
-				// Redirect
-				Session::flash('message', 'Post Created!');
-				// return Redirect::to("/user/$username");
-				return Redirect::to(route('users.show', [$username]));
-			}
+		if ($validator->fails()) {
+			return Redirect::back()
+				->withErrors($validator)
+				->withInput();
 		} else {
-			// Redirect with message
-			Session::flash('message_info', 'You need to log in first!');
-			return Redirect::to('auth/login');
+			$post = new Post;
+
+			$post->title = Request::get('title');
+			$post->content = Request::get('content');
+			$post->user_id = Auth::user()->getId();
+			$post->username = Auth::user()->getUsername();
+
+			$post->save();
+
+			
+			$username =  Auth::user()->getUsername();
+
+			// Redirect
+			Session::flash('message', 'Post Created!');
+			// return Redirect::to("/user/$username");
+			return Redirect::to(route('users.show', [$username]));
 		}
 	}
 
@@ -130,22 +123,20 @@ class PostsController extends Controller {
 	 */
 	public function edit($id)
 	{
-		if (Auth::check()) {
+		$post = Post::find($id);
 
-			$post = Post::find($id);
+		if ($post == NULL) {
 
-			if ($post == NULL) {
-				Session::flash('info_message', 'Not a valid post!');
-				return redirect(route('posts.index'));
-			} elseif (Auth::user()->getId() == $post->user_id) {
-			 	return view('posts.edit', ['post' => $post]);
-			} else {
-				Session::flash('info_message', 'You are not authorised to do that!');
-				return Redirect::to(route('posts.show', [$post->id]));
-			}
+			Session::flash('info_message', 'Not a valid post!');
+			return redirect(route('posts.index'));
+
+		} elseif (Auth::user()->getId() == $post->user_id) {
+
+		 	return view('posts.edit', ['post' => $post]);
+
 		} else {
-			Session::flash('info_message', 'You need to log in first!');
-			return Redirect::to(route('auth.login'));
+			Session::flash('info_message', 'You are not authorised to do that!');
+			return Redirect::to(route('posts.show', [$post->id]));
 		}
 	}
 
@@ -157,11 +148,10 @@ class PostsController extends Controller {
 	 */
 	public function update($id)
 	{
+		$post = Post::findOrFail($id);
 
-
-		if (Auth::check()) {
-
-			
+		if (Auth::user()->getId() == $post->user_id) {
+		
 			$rules = array(
 				'title' 	=>	'required|min:1|',
 				'content'	=>	'required|min:3|'
@@ -175,7 +165,6 @@ class PostsController extends Controller {
 					->withInput();
 			} else {
 				
-				$post = Post::findOrFail($id);
 
 				$post->title = Request::get('title');
 				$post->content = Request::get('content');
@@ -184,11 +173,12 @@ class PostsController extends Controller {
 
 				// Redirect
 				Session::flash('message', 'Post updated!');
-				return Redirect::to(route('posts.show', [$post->id]));
+				return redirect(route('posts.show', [$post->id]));
 			}
+
 		} else {
-			Session::flash('info_message', 'You do not have that permission!');
-			return redirect(route('posts.show', [$id]));
+			Session::flash('info_message', 'You do not have that permission');
+			return redirect(route('posts.show', [$post->id]));
 		}
 	}
 
@@ -200,26 +190,18 @@ class PostsController extends Controller {
 	 */
 	public function destroy($id)
 	{
-		if (Auth::check()) {
+		$post = Post::find($id);
 
-			$post = Post::find($id);
+		if (Auth::user()->getId() == $post->user_id) {
 
-			if (Auth::user()->getId() == $post->user_id) {
+			$post->delete();
 
-				$post->delete();
-
-				// Redirect
-				Session::flash('message', 'Post deleted!');
-				return redirect(route('users.show', [$post->username]));
-			} else {
-				Session::flash('info_message', 'You do not have that permission!');
-				return redirect(route('posts.show', [$id]));
-			}
-			
+			// Redirect
+			Session::flash('message', 'Post deleted!');
+			return redirect(route('users.show', [$post->username]));
 		} else {
-			Session::flash('info_message', 'Please log in first!');
-			return redirect(route('auth.login'));
+			Session::flash('info_message', 'You do not have that permission!');
+			return redirect(route('posts.show', [$id]));
 		}
 	}
-
 }

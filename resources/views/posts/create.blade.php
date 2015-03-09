@@ -9,15 +9,8 @@
 		</div>
 
 		<div class="form-body">
-			<div class="form-group">
-				@if($errors->has())
-					<div class="alert alert-danger" role="alert">
-				   		@foreach ($errors->all() as $error)
-				        	<strong>Oops!</strong> {{ $error }}<br>
-				    	@endforeach
-				    </div>
-				@endif
-			</div>
+		
+			@include('errors.list')
 
 			<div class="form-group">
 				{!! Form::label('', "", []) !!}
@@ -29,7 +22,7 @@
 				{!! Form::textarea('content', "", ['class' => 'form-control', 'placeholder' => 'Content', 'minlength' => '3']) !!}
 			</div>
 
-			{!! Form::submit('Create Post', ['class' => 'form-button btn pull-right']) !!}
+			{!! Form::submit('Create Post', ['class' => 'form-button btn btn-block']) !!}
 			<div class="clear"></div>
 		</div>
 	{!! Form::close() !!}

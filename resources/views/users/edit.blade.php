@@ -10,15 +10,8 @@
 		</div>
 
 		<div class="form-body">
-			<div class="form-group">
-				@if($errors->has())
-					<div class="alert alert-danger" role="alert">
-				   		@foreach ($errors->all() as $error)
-				        	<strong>Oops!</strong> {{ $error }}<br>
-				    	@endforeach
-				    </div>
-				@endif
-			</div>
+		
+			@include('errors.list')
 
 			<div class="form-group form-last">
 				{!! Form::label('', "", []) !!}

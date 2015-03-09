@@ -2,12 +2,22 @@
 
 use DB;
 use Auth;
+use Session;
+use App\Http\Requests\GroupRequest;
+
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
-
 use Illuminate\Support\Facades\Request;
 
 class GroupsController extends Controller {
+
+	/**
+	 * Constructor method.
+	 */
+	public function __construct()
+	{
+		$this->middleware('auth', ['except' => ['index', 'show', 'search']]);
+	}
 
 	/**
 	 * Display a listing of the resource.
@@ -26,11 +36,7 @@ class GroupsController extends Controller {
 	 */
 	public function create()
 	{
-		if (Auth::check()) {
-			return view('groups.create');
-		} else {
-			return redirect('/auth/login');
-		}
+		return view('groups.create');
 	}
 
 	/**
@@ -38,9 +44,19 @@ class GroupsController extends Controller {
 	 *
 	 * @return Response
 	 */
-	public function store()
+	public function store($id, GroupRequest $request)
 	{
-		//
+		// $group = new Group;
+
+		// $group->name = $request->name;
+		// $group->about = $request->about;
+		// $group->creator = Auth::user()->getUsername();
+
+		// $group->save();
+
+		// Redirect
+		// Session:flash('message', 'Group Created!');
+		// return redirect(route('groups.show', [$group->id]));
 	}
 
 	/**
@@ -78,7 +94,7 @@ class GroupsController extends Controller {
 			return view('groups.search', ['results' => $results]);
 		}
 
-		return view('groups.search', []);
+		return view('groups.search');
 	}
 
 	/**

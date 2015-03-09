@@ -10,7 +10,7 @@
 	{!! Form::close() !!}
 
 	<br>
-	<p>Can't find a cool group? Why not <a href="/post/create">create</a> one.</p>
+	<p>Can't find a cool group? Why not <a href="{{ route('groups.create') }}">create</a> one.</p>
 
  	@if (isset($results) && !empty($results))
  		<div id="search-results-container">

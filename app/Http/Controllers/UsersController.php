@@ -1,20 +1,24 @@
 <?php namespace App\Http\Controllers;
 
+use DB;
+use Auth;
+use Hash;
+use Request;
+use Session;
+use App\Post;
+use Redirect;
+use Validator;
+
 use App\User;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
-use Session;
-use Request;
-use Validator;
-use Redirect;
-use Hash;
-use Auth;
-use DB;
-
-use App\Post; //test
-
 class UsersController extends Controller {
+
+	public function __construct()
+	{
+		$this->middleware('auth', ['only' => ['edit', 'update', 'destroy']]);
+	}
 
 	/**
 	 * Display a listing of the resource.
@@ -133,25 +137,18 @@ class UsersController extends Controller {
 	public function edit($username)
 	{
 
-		if (Auth::check())
-		{
-			$user = User::where('username', '=', $username)->first();
+		$user = User::where('username', '=', $username)->first();
 
-			if ($user) {
-				if (Auth::user()->getId() == $user->id) {
-					return view('users.edit', compact('user'));
-				} else {
-					Session::flash('info_message', "You don't have the privilege!");
-					return redirect(route('users.show', $user->username));
-				}
+		if ($user) {
+			if (Auth::user()->getId() == $user->id) {
+				return view('users.edit', compact('user'));
 			} else {
-				Session::flash('info_message', 'Invalid user!');
-				return Redirect::back();
+				Session::flash('info_message', "You don't have the privilege!");
+				return redirect(route('users.show', $user->username));
 			}
-
 		} else {
-			Session::flash('info_message', 'Please log in first!');
-			return redirect(route('auth.login'));
+			Session::flash('info_message', 'Invalid user!');
+			return Redirect::back();
 		}
 	}
 
@@ -163,9 +160,10 @@ class UsersController extends Controller {
 	 */
 	public function update($username)
 	{
-		if (Auth::check()) {
 
-			$user = User::where('username', '=', $username)->first();
+		$user = User::where('username', '=', $username)->first();
+
+		if (Auth::user()->getId() == $user->id) {
 
 			$rules = array(
 				'name' => 'required|min:3|regex:/^[a-zA-Z][a-zA-Z ]*$/'
@@ -189,6 +187,10 @@ class UsersController extends Controller {
 				Session::flash('message', 'Successfully updated!');
 				return redirect(route('users.show', [$user->username]));
 			}
+			
+		} else {
+			Session::flash('info_message', 'You do not have that permission!');
+			return redirect(route('users.show', [$user->username]));
 		}
 	}
 
@@ -200,28 +202,21 @@ class UsersController extends Controller {
 	 */
 	public function destroy($id)
 	{
-		if (Auth::check()) {
+		$user = User::find($id);
 
-			$user = User::find($id);
+		// Check if signed in user matches user to be deleted
+		if (Auth::user()->getId() == $user->id) {
 
-			if (Auth::user()->getId() == $user->id) {
+			Auth::logout();
 
-				// Logout
-				Auth::logout();
+			$user->delete();
 
-				$user->delete();
-
-				// Redirect
-				Session::flash('info_message', 'Account Deleted!');
-				return redirect(route('users.index'));
-			} else {
-				Session::flash('info_message', 'You do not have that permission');
-				return redirect(route('users.show', [$id]));
-			}
+			// Redirect
+			Session::flash('info_message', 'Account Deleted!');
+			return redirect(route('users.index'));
 		} else {
-			Session::flash('info_message', 'Please log in first');
-			return redirect(route('auth.login'));
+			Session::flash('info_message', 'You do not have that permission');
+			return redirect(route('users.show', [$id]));
 		}
 	}
-
 }

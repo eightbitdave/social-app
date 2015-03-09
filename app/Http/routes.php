@@ -32,7 +32,7 @@ Route::get('password/email', function(){
 
 Route::controllers([
 	'auth' => 'Auth\AuthController',
-	'password' => 'Auth\PasswordController',
+	'password' => 'Auth\PasswordController'
 ]);
 
-Route::post('auth/login', ['as' => 'auth.login', 'uses' => 'AuthController']);
+Route::post('auth/login', ['as' => 'auth.login', 'uses' => 'Auth\AuthController']);

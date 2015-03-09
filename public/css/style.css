@@ -7,9 +7,9 @@ body {
 }
 
 p {
+	color: #666;
 	font-family: helvetica;
 	font-size: 1.0em;
-	color: #666;
 }
 
 nav	{
@@ -33,8 +33,8 @@ nav	{
 }
 
 .alert {
-	margin-top: 10px;
 	margin-bottom: 0;
+	margin-top: 10px;
 }
 
 #search-header {
@@ -46,16 +46,16 @@ nav	{
 }
 
 #search-results-container {
-	padding: 15px;
-	margin-top: 20px;
-	border: 1px solid #d8d8d8;
 	border-radius: 4px;
+	border: 1px solid #d8d8d8;
+	margin-top: 20px;
+	padding: 15px;
 }
 
 .search-result-item {
+	border-bottom: 1px solid #d8d8d8;
 	padding-bottom: 10px;
 	padding-top: 10px;
-	border-bottom: 1px solid #d8d8d8;
 }
 
 .message-alert {
@@ -68,34 +68,34 @@ nav	{
 
 .form {
 	background: #FFF;
-	border-top-right-radius: 4px;
-	border-top-left-radius: 4px;
 	border-radius: 1px solid #999;
+	border-top-left-radius: 4px;
+	border-top-right-radius: 4px;
 }
 
 .form-header-container{
-	border-top-right-radius: 4px;
-	border-top-left-radius: 4px;
 	background-color: #EBEBEB;
-	padding: 10px;
-	margin: 0 !important;
 	border-left: 1px solid #d8d8d8;
 	border-right: 1px solid #d8d8d8;
+	border-top-left-radius: 4px;
+	border-top-right-radius: 4px;
 	border-top: 1px solid #d8d8d8;
+	margin: 0 !important;
+	padding: 10px;
 }
 
 .form-header {
+	color: #777;
 	font-family: helvetica;
 	font-size: 1.1em;
-	color: #777;
 	font-weight: bold;
 }
 
 .form-body {
-	padding: 0 10px 10px 10px;
-	border: 1px solid #d8d8d8;
 	border-bottom-left-radius: 4px;
 	border-bottom-right-radius: 4px;
+	border: 1px solid #d8d8d8;
+	padding: 0 10px 10px 10px;
 }
 
 .form-group {
@@ -107,26 +107,26 @@ nav	{
 }
 
 .form-label {
+	color: #8C8C8C;
 	font-family: helvetica;
 	font-weight: normal;
-	color: #8C8C8C;
 }
 
 .form-search {
-	padding: 20px 10px;
 	font-size: 1.3em;
 	margin-bottom: 10px;
+	padding: 20px 10px;
 }
 
 .form-button {
 	background-color: #49C99A;
 	border-radius: 5px;
 	border: none;
-	padding: 10px 15px;
-	outline: none;
-	font-size: 14px;
 	color: #FFF;
+	font-size: 14px;
 	font-weight: bold;
+	outline: none;
+	padding: 10px 15px;
 }
 
 .form-button:hover {
@@ -142,8 +142,8 @@ input {
 }
 
 .forgot{
-	margin-top: 10px;
 	float: right;
+	margin-top: 10px;
 }
 
 .username-group {
@@ -159,9 +159,9 @@ input {
 }
 
 #container {
-	margin: 15px;
 	background-color: #FFF;
-	border: 1px solid #d8d8d8;
 	border-radius: 4px;
+	border: 1px solid #d8d8d8;
+	margin: 15px;
 	padding: 15px;
 }
