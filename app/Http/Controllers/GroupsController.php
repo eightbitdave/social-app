@@ -3,6 +3,8 @@
 use DB;
 use Auth;
 use Session;
+
+use App\Group;
 use App\Http\Requests\GroupRequest;
 
 use App\Http\Requests;
@@ -44,19 +46,19 @@ class GroupsController extends Controller {
 	 *
 	 * @return Response
 	 */
-	public function store($id, GroupRequest $request)
+	public function store(GroupRequest $request)
 	{
-		// $group = new Group;
+		$group = new Group;
 
-		// $group->name = $request->name;
-		// $group->about = $request->about;
-		// $group->creator = Auth::user()->getUsername();
+		$group->name = $request->name;
+		$group->about = $request->about;
+		$group->creator = Auth::user()->getUsername();
 
-		// $group->save();
+		$group->save();
 
 		// Redirect
-		// Session:flash('message', 'Group Created!');
-		// return redirect(route('groups.show', [$group->id]));
+		Session::flash('message', 'Group Created!');
+		return redirect(route('groups.show', [$group->id]));
 	}
 
 	/**
@@ -67,7 +69,19 @@ class GroupsController extends Controller {
 	 */
 	public function show($id)
 	{
-		// Needs work.
+
+		/*
+			TODO: Pass through $member_count variable;
+		*/
+
+		$group = Group::find($id);
+
+		if ($group) {
+			return view('groups.show', compact('group'));
+		} else {
+			Session::flash('info_message', 'That group does not exist');
+			return redirect(route('groups.index'));
+		}
 	}
 
 	/**
@@ -97,6 +111,11 @@ class GroupsController extends Controller {
 		return view('groups.search');
 	}
 
+	public function join($id)
+	{
+		return "Successfuly joined the group! (not).";
+	}
+
 	/**
 	 * Show the form for editing the specified resource.
 	 *
@@ -105,7 +124,23 @@ class GroupsController extends Controller {
 	 */
 	public function edit($id)
 	{
-		//
+		$group = Group::find($id);
+
+		$username = Auth::user()->getUsername();
+
+		if ($group == NULL) {
+
+			Session::flash('info_message', 'Not a valid group!');
+			return redirect(route('groups.index'));
+
+		} elseif ($username == $group->creator) {
+
+			return view('groups.edit', compact('group'));
+
+		} else {
+			Session::flash('info_message', 'You do not have that permission!');
+			return redirect(route('groups.show', [$group->id]));
+		}
 	}
 
 	/**

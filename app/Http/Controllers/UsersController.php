@@ -91,11 +91,16 @@ class UsersController extends Controller {
 	 */
 	public function show($username)
 	{
+
+		/*
+			TODO: Retrieve the x latest posts for a given user.
+		*/
 		$user = User::where('username', '=', $username)->first();
 
 		if ($user) {
 
 			$posts = $user->posts->take(5);
+			
 			// $posts = DB::table('posts')->where('user_id', $user->id)->get();
 
 			return view('users.show', compact('user', 'posts'));

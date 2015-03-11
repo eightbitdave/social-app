@@ -132,11 +132,11 @@ class PostsController extends Controller {
 
 		} elseif (Auth::user()->getId() == $post->user_id) {
 
-		 	return view('posts.edit', ['post' => $post]);
+		 	return view('posts.edit', compact('post')]);
 
 		} else {
 			Session::flash('info_message', 'You are not authorised to do that!');
-			return Redirect::to(route('posts.show', [$post->id]));
+			return redirect(route('posts.show', [$post->id]));
 		}
 	}
 

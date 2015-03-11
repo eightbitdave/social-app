@@ -17,7 +17,7 @@
 	 		<p id="search-header">Search results:</p>
 			@foreach ($results as $result)
 				 <?php 
-			 		$string = $result->info;
+			 		$string = $result->about;
 			 		$string = strip_tags($string);
 
 			 		if (strlen($string) > 100){
@@ -27,7 +27,7 @@
 		 		<div class="search-result-item">
 					<h4><a href="/groups/{{$result->id}}">{{$result->name}}</a></h4>
 					<p class="search-result-content">{{ $string }}...</p>
-					<a class="pull-right" href="/users/{{$result->username}}">&#64;{{$result->username}}</a>
+					<a class="btn btn-info pull-right" href="/users/{{$result->creator}}">&#64;{{$result->creator}}</a>
 					<div class="clear"></div>
 				</div>
 			@endforeach

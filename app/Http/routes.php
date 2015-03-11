@@ -17,6 +17,7 @@ Route::resource('posts', 'PostsController');
 
 
 // Group Routes
+Route::get('groups/{id}/join', 'GroupsController@join');
 Route::get('groups/search', 'GroupsController@search');
 Route::post('groups/search', ['as' => 'groups.search', 'uses' => 'GroupsController@search']);
 Route::resource('groups', 'GroupsController');
