@@ -27,8 +27,9 @@ class GroupRequest extends Request {
 	public function rules()
 	{
 		return [
-			'name' 	=>	'required|min:3',
-			'about'		=>	'required|min:3'
+			'name' 		=>	'required|min:3',
+			'about'		=>	'required|min:3',
+			'tag'		=>	'required'
 		];
 	}
 

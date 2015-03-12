@@ -17,9 +17,14 @@
 				{!! Form::text('name', "", ['class' => 'form-control', 'placeholder' => 'Group Name', 'minlength' => '3']) !!}
 			</div>
 
-			<div class="form-group form-last">
+			<div class="form-group">
 				{!! Form::label('', "", []) !!}
 				{!! Form::textarea('about', "", ['class' => 'form-control', 'placeholder' => 'About the group', 'minlength' => '3']) !!}
+			</div>
+
+			<div class="form-group form-last">
+				{!! Form::label('', "", []) !!}
+				{!! Form::select('tag', $tags, null, ['class' => 'form-control', 'placeholder' => 'About the group', 'minlength' => '3']) !!}
 			</div>
 
 			{!! Form::submit('Create Group', ['class' => 'form-button btn btn-block']) !!}

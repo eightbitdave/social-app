@@ -3,6 +3,7 @@
 use DB;
 use Auth;
 use Session;
+use App\Tag;
 
 use App\Group;
 use App\Http\Requests\GroupRequest;
@@ -38,7 +39,9 @@ class GroupsController extends Controller {
 	 */
 	public function create()
 	{
-		return view('groups.create');
+		$tags = Tag::lists('name', 'name');
+
+		return view('groups.create', compact('tags'));
 	}
 
 	/**
@@ -52,6 +55,7 @@ class GroupsController extends Controller {
 
 		$group->name = $request->name;
 		$group->about = $request->about;
+		$group->tag = $request->tag;
 		$group->creator = Auth::user()->getUsername();
 
 		$group->save();
@@ -77,7 +81,10 @@ class GroupsController extends Controller {
 		$group = Group::find($id);
 
 		if ($group) {
-			return view('groups.show', compact('group'));
+
+			$tag = $group->tag;
+
+			return view('groups.show', compact('group', 'tag'));
 		} else {
 			Session::flash('info_message', 'That group does not exist');
 			return redirect(route('groups.index'));
