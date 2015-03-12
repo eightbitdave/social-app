@@ -10,9 +10,17 @@
 
 		<p class="group-creator">Creator: <a href="/users/{{$group->creator}}">&#64;{{ $group->creator }}</a></p>
 
-		<p class="group-about">{{ $group->about }}</p>
+		<p class="group-about">About: {{ $group->about }}</p>
 
-		<a class="btn form-button btn-lrg pull-right {{ $tag }}" href="/groups/{{$tag}}/join">Join Now</a>
+		
+		@if (Auth::check() && Auth::user()->getUsername() == $group->creator)
+			<a class="btn form-button btn-large pull-right {{ $tag }}" href="/groups/{{$group->id}}/edit">Edit Group</a>
+		@else
+			<a class="btn form-button btn-large pull-right {{ $tag }}" href="/groups/{{$group->id}}/join">Join Group</a>
+		@endif
+		
+
+
 		<div class="clear"></div>
 
 	@else

@@ -76,6 +76,10 @@ class GroupsController extends Controller {
 
 		/*
 			TODO: Pass through $member_count variable;
+
+			Something like:
+
+			isMemberOf::where('group', '=', $group->id);
 		*/
 
 		$group = Group::find($id);
@@ -142,7 +146,9 @@ class GroupsController extends Controller {
 
 		} elseif ($username == $group->creator) {
 
-			return view('groups.edit', compact('group'));
+			$tags = Tag::lists('name', 'name');
+
+			return view('groups.edit', compact('group', 'tags'));
 
 		} else {
 			Session::flash('info_message', 'You do not have that permission!');
@@ -156,9 +162,24 @@ class GroupsController extends Controller {
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function update($id)
+	public function update($id, GroupRequest $request)
 	{
-		//
+		$group = Group::findOrFail($id);
+
+		if (Auth::user()->getUsername() == $group->creator) {
+			$group->name = $request->name;
+			$group->about = $request->about;
+			$group->tag = $request->tag;
+
+			$group->save();
+
+			// Redirect
+			Session::flash('message', 'Group updated!');
+			return redirect(route('groups.show', [$group->id]));
+		} else {
+			Session::flash('info_message', 'You do not have that permission!');
+			return redirect(route('groups.show', [$group->id]));
+		}
 	}
 
 	/**
@@ -169,7 +190,20 @@ class GroupsController extends Controller {
 	 */
 	public function destroy($id)
 	{
-		//
+		$group = Group::find($id);
+
+		if (Auth::user()->getUsername() == $group->creator) {
+
+			$group->delete();
+
+			// Redirect
+			Session::flash('message', 'Group deleted!');
+			return redirect(route('users.show', [$group->creator]));
+
+		} else {
+			Session::flash('info_message', 'You do not have that permission!');
+			return redirect(route('groups.show', [$group->id]));
+		}
 	}
 
 }

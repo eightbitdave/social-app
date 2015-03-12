@@ -26,10 +26,12 @@
 			<div class="clear"></div>
 		</div>
 	{!! Form::close() !!}
+	
 	<br>
+
 	{!! Form::open(['method' => 'DELETE', 'route' => ['posts.destroy', $post->id]]) !!}
 		<div class="form-group">
-			{!! Form::submit('Delete', ['class' => 'btn btn-block btn-danger']) !!}
+			{!! Form::submit('Delete Post', ['class' => 'btn btn-block btn-danger']) !!}
 		</div>
 		<div class="clear"></div>
 	{!! Form::close() !!}
