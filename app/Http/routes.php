@@ -17,6 +17,10 @@ Route::resource('posts', 'PostsController');
 
 
 // Group Routes
+
+Route::get('groups/tags', 'GroupsController@tags'); // TODO
+Route::get('groups/tag/{tag}', 'GroupsController@showTag'); // TODO
+
 Route::get('groups/{id}/join', 'GroupsController@join');
 Route::get('groups/search', 'GroupsController@search');
 Route::post('groups/search', ['as' => 'groups.search', 'uses' => 'GroupsController@search']);

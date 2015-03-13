@@ -19,7 +19,7 @@ class GroupsController extends Controller {
 	 */
 	public function __construct()
 	{
-		$this->middleware('auth', ['except' => ['index', 'show', 'search']]);
+		$this->middleware('auth', ['except' => ['index', 'show', 'search', 'tag']]);
 	}
 
 	/**
@@ -122,10 +122,50 @@ class GroupsController extends Controller {
 		return view('groups.search');
 	}
 
+	/**
+	 * Allow the user to become a member of a specified group.
+	 *
+	 * @param int $id
+	 * @return Response
+	 */
 	public function join($id)
 	{
+		/*
+			TODO: Implement Joining Feature
+		*/
+
 		return "Successfuly joined the group! (not).";
 	}
+
+
+	public function tags()
+	{
+		$tags = Tag::lists('name', 'name');
+
+		return view('groups.tags', compact('tags'));
+	}
+
+	/**
+	 * Show all groups that contain a given tag.
+	 *
+	 */
+	public function showTag($tag)
+	{
+		/*
+			TODO: Allow users to search groups using a tag.
+		*/
+
+		$groupList = Group::where('tag', '=', $tag)->get();
+
+		if ($groupList) {
+			return view('groups.tag', compact('groupList'));
+
+		} else {
+			Session::flash('info_message', 'Not a valid tag!');
+			return redirect(route('groups.search'));
+		}
+	}
+
 
 	/**
 	 * Show the form for editing the specified resource.
