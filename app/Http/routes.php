@@ -18,8 +18,14 @@ Route::resource('posts', 'PostsController');
 
 // Group Routes
 
-Route::get('groups/tags', 'GroupsController@tags'); // TODO
+// Leaving Group Routes
+Route::get('groups/{id}/leave', ['as' => 'groups.destroyMember', 'uses' => 'GroupsController@leave']); // TODO
+Route::delete('groups/{id}/leave', 'GroupsController@destroyMember');
+
+// Group Tag Routes
+Route::get('groups/tags', 'GroupsController@tags');
 Route::get('groups/tag/{tag}', 'GroupsController@showTag'); // TODO
+
 
 Route::get('groups/{id}/join', 'GroupsController@join');
 Route::get('groups/search', 'GroupsController@search');

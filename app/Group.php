@@ -25,4 +25,14 @@ class Group extends Model {
 	 */
 	protected $hidden = [];
 
+
+	/**
+	 * Get the users associated with the given group.
+	 * @return Response
+	 */
+	public function users()
+	{
+		return $this->belongsToMany('App\User')->withTimestamps();
+	}
+
 }

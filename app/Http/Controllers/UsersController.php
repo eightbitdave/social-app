@@ -95,15 +95,18 @@ class UsersController extends Controller {
 		/*
 			TODO: Retrieve the x latest posts for a given user.
 		*/
+
+
 		$user = User::where('username', '=', $username)->first();
+
 
 		if ($user) {
 
-			$posts = $user->posts->take(5);
-			
-			// $posts = DB::table('posts')->where('user_id', $user->id)->get();
+			$posts = DB::select("select * from posts where user_id = $user->id ORDER BY created_at DESC LIMIT 5");
 
-			return view('users.show', compact('user', 'posts'));
+			$groups = $user->groups;
+
+			return view('users.show', compact('user', 'posts', 'groups'));
 		} else {
 			Session::flash('info_message', 'User does not exist!');
 			return redirect(route('users.index'));

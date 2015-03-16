@@ -8,14 +8,24 @@
 		<h3>No user with that username.</h3>
 	@endif
 
-	@if ($posts)
-		Recent Posts:<br>
-		@foreach ($posts as $post)
-			<a href="/posts/{{$post->id}}">{{ $post->title }}</a><br>
+	@if (!$groups->isEmpty())
+		<h4>Groups I'm In:</h4>
+		@foreach($groups as $group)
+			<a class="btn form-button btn-block {{$group->tag}}" href="/groups/{{$group->id}}">{{ $group->name }}</a>
 		@endforeach
-		<br><br><a class="btn btn-primary btn-lg btn-block" href="/users/{{$user->username}}/posts">All Posts</a>
+		<br>
+	@endif
+
+	@if ($posts)
+		<h4>My Recent Posts:</h4>
+		@foreach ($posts as $post)
+			<a class="btn btn-block btn-info" href="/posts/{{$post->id}}">{{ $post->title }}</a>
+		@endforeach
+		@if (count($posts) > 5)
+			<br><a class="btn btn-primary btn-block" href="/users/{{$user->username}}/posts">All Posts</a>
+		@endif
 	@else
-		This user has no posts!
+		<h4>This user has no posts!</h4>
 	@endif
 
 @stop

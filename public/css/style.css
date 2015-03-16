@@ -62,6 +62,14 @@ nav	{
 	margin: 0 15px 20px 15px;
 }
 
+.label-link {
+	text-decoration: none !important;
+}
+
+.label-link:hover {
+	text-decoration: none !important;
+}
+
 
 /* Programming Languages Colours */
 

@@ -19,7 +19,7 @@ class GroupsController extends Controller {
 	 */
 	public function __construct()
 	{
-		$this->middleware('auth', ['except' => ['index', 'show', 'search', 'tag']]);
+		$this->middleware('auth', ['except' => ['index', 'show', 'search', 'tags', 'showTag']]);
 	}
 
 	/**
@@ -74,21 +74,25 @@ class GroupsController extends Controller {
 	public function show($id)
 	{
 
-		/*
-			TODO: Pass through $member_count variable;
-
-			Something like:
-
-			isMemberOf::where('group', '=', $group->id);
-		*/
-
 		$group = Group::find($id);
 
 		if ($group) {
 
+			$user_id = Auth::user()->getId();
+
+			$userJoined = DB::select("select user_id from group_user where user_id = $user_id and group_id = " . $group->id);
+
+			if (!empty($userJoined)) {
+				$isJoined = true;
+			} else {
+				$isJoined = false;
+			}
+
+			$members = $group->users;
 			$tag = $group->tag;
 
-			return view('groups.show', compact('group', 'tag'));
+			return view('groups.show', compact('group', 'tag', 'members', 'isJoined'));
+
 		} else {
 			Session::flash('info_message', 'That group does not exist');
 			return redirect(route('groups.index'));
@@ -122,6 +126,7 @@ class GroupsController extends Controller {
 		return view('groups.search');
 	}
 
+
 	/**
 	 * Allow the user to become a member of a specified group.
 	 *
@@ -130,11 +135,68 @@ class GroupsController extends Controller {
 	 */
 	public function join($id)
 	{
-		/*
-			TODO: Implement Joining Feature
-		*/
+		$group = Group::find($id);
 
-		return "Successfuly joined the group! (not).";
+		if($group) {
+
+			if(Auth::user()->getUsername() == $group->creator) {
+				Session::flash('info_message', 'You cannot join your own group!');
+				return redirect(route('groups.show', [$group->id]));
+			}
+
+			$user_id = Auth::user()->getId();
+
+			$userJoined = DB::select("select user_id from group_user where user_id = $user_id and group_id = $group->id");
+
+			if (empty($userJoined)) {
+				$group->users()->attach(Auth::user()->getId());
+
+				Session::flash('message', 'Joined Group!');
+				return redirect(route('groups.show', [$group->id]));
+
+			} else {
+				Session::flash('info_message', 'You are already in this group!');
+				return redirect(route('groups.show', [$group->id]));
+			}
+
+		} else {
+			Session::flash('info_message', 'No such group!');
+			return redirect(route('groups.index'));
+		}
+	}
+
+	public function leave($id)
+	{
+		$group = Group::find($id);
+
+		if ($group) {
+			return view('groups.leave', compact('group'));
+		} else {
+			Session::flash('info_message', 'Invalid group!');
+			return redirect(route('groups.index'));
+		}
+
+	}
+
+	public function destroyMember($id)
+	{
+		$group = Group::find($id);
+
+		if ($group) {
+			$x = DB::select("select user_id from group_user where user_id = " . Auth::user()->getId());
+
+			if (!empty($x)) {
+
+				DB::table('group_user')->where('user_id', '=', Auth::user()->getId())->delete();
+
+				Session::flash('message', 'Successfully left the group');
+				return redirect(route('groups.show', [$group->id]));
+				
+			} else {
+				Session::flash('You are not a member of that group!');
+				return redirect(route('groups.show', [$group->id]));
+			}
+		}
 	}
 
 
@@ -151,14 +213,10 @@ class GroupsController extends Controller {
 	 */
 	public function showTag($tag)
 	{
-		/*
-			TODO: Allow users to search groups using a tag.
-		*/
-
 		$groupList = Group::where('tag', '=', $tag)->get();
 
 		if ($groupList) {
-			return view('groups.tag', compact('groupList'));
+			return view('groups.tag', compact('groupList', 'tag'));
 
 		} else {
 			Session::flash('info_message', 'Not a valid tag!');

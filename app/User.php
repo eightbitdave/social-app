@@ -47,9 +47,20 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 	 *
 	 * @return \Illuminate\Database\Eloquent\Relations\HasMany
 	 */
-
 	public function posts()
 	{
 		return $this->hasMany('App\Post');
 	}
+
+
+	/**
+	 * Get the groups associated with the given user.
+	 *
+	 * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+	 */
+	public function groups()
+	{
+		return $this->belongsToMany('App\Group')->withTimestamps();
+	}
+
 }
