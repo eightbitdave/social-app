@@ -91,14 +91,7 @@ class UsersController extends Controller {
 	 */
 	public function show($username)
 	{
-
-		/*
-			TODO: Retrieve the x latest posts for a given user.
-		*/
-
-
 		$user = User::where('username', '=', $username)->first();
-
 
 		if ($user) {
 

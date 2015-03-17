@@ -59,6 +59,9 @@ class GroupsController extends Controller {
 		$group->creator = Auth::user()->getUsername();
 
 		$group->save();
+		
+		// Add the creator as a member of the group.
+		$group->users()->attach(Auth::user()->getId());
 
 		// Redirect
 		Session::flash('message', 'Group Created!');
@@ -78,15 +81,17 @@ class GroupsController extends Controller {
 
 		if ($group) {
 
+			$isJoined = false;
+
+			if (Auth::check()) {
 			$user_id = Auth::user()->getId();
 
 			$userJoined = DB::select("select user_id from group_user where user_id = $user_id and group_id = " . $group->id);
 
 			if (!empty($userJoined)) {
 				$isJoined = true;
-			} else {
-				$isJoined = false;
 			}
+		}
 
 			$members = $group->users;
 			$tag = $group->tag;
@@ -140,7 +145,7 @@ class GroupsController extends Controller {
 		if($group) {
 
 			if(Auth::user()->getUsername() == $group->creator) {
-				Session::flash('info_message', 'You cannot join your own group!');
+				Session::flash('info_message', 'You are the creator of the group!');
 				return redirect(route('groups.show', [$group->id]));
 			}
 

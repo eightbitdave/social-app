@@ -19,10 +19,10 @@
 	@if ($posts)
 		<h4>My Recent Posts:</h4>
 		@foreach ($posts as $post)
-			<a class="btn btn-block btn-info" href="/posts/{{$post->id}}">{{ $post->title }}</a>
+			<a class="btn btn-default btn-block" href="/posts/{{$post->id}}">{{ $post->title }}</a>
 		@endforeach
-		@if (count($posts) > 5)
-			<br><a class="btn btn-primary btn-block" href="/users/{{$user->username}}/posts">All Posts</a>
+		@if (count($posts) == 5)
+			<br><a class="btn btn-default btn-block" href="/users/{{$user->username}}/posts">All Posts</a>
 		@endif
 	@else
 		<h4>This user has no posts!</h4>

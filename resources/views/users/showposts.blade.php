@@ -6,7 +6,7 @@
 
 	@if (count($posts))
 		@foreach ($posts as $post)
-			<a href="/posts/{{$post->id}}">{{$post->title}}</a><br>
+			<a class="btn btn-block btn-default" href="/posts/{{$post->id}}">{{$post->title}}</a>
 		@endforeach
 	@else
 		<p>This user has no posts, bummer!</p>
