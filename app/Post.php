@@ -40,4 +40,9 @@ class Post extends Model implements AuthenticatableContract {
 		return $this->belongsTo('App\User');
 	}
 
+	public function comments()
+	{
+		return $this->hasMany('App\Comment');
+	}
+
 }

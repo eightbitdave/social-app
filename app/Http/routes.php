@@ -15,16 +15,19 @@ Route::get('posts/search', 'PostsController@search');
 Route::post('posts/search', ['as' => 'posts.search', 'uses' => 'PostsController@search']);
 Route::resource('posts', 'PostsController');
 
+// Post Comments
+Route::resource('posts.comments', 'PostCommentController');
+
 
 // Group Routes
 
 // Leaving Group Routes
-Route::get('groups/{id}/leave', ['as' => 'groups.destroyMember', 'uses' => 'GroupsController@leave']); // TODO
+Route::get('groups/{id}/leave', ['as' => 'groups.destroyMember', 'uses' => 'GroupsController@leave']);
 Route::delete('groups/{id}/leave', 'GroupsController@destroyMember');
 
 // Group Tag Routes
 Route::get('groups/tags', 'GroupsController@tags');
-Route::get('groups/tag/{tag}', 'GroupsController@showTag'); // TODO
+Route::get('groups/tag/{tag}', 'GroupsController@showTag');
 
 
 Route::get('groups/{id}/join', 'GroupsController@join');

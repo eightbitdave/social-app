@@ -1,9 +1,10 @@
-* { 
+body {
+	background-color: #F5F5F5;
 	font-family: helvetica;
 }
 
-body {
-	background-color: #F5F5F5;
+code {
+	font-family: Consolas !important;
 }
 
 p {
@@ -55,6 +56,15 @@ nav	{
 .search-result-item {
 	border-bottom: 1px solid #d8d8d8;
 	padding-bottom: 10px;
+	padding-top: 10px;
+}
+
+.comment-container {
+	border-bottom: 1px solid #d8d8d8;
+	padding-bottom: 10px;
+}
+
+.comment-para {
 	padding-top: 10px;
 }
 
