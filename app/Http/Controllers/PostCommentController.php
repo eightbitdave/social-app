@@ -1,9 +1,14 @@
 <?php namespace App\Http\Controllers;
 
 use Session;
+use Auth;
 
+use App\Comment;
+use App\Lang;
 use App\Post;
+
 use App\Http\Requests;
+use App\Http\Requests\CommentRequest;
 use App\Http\Controllers\Controller;
 
 use Illuminate\Support\Facades\Request;
@@ -12,7 +17,7 @@ class PostCommentController extends Controller {
 
 	public function __construct()
 	{
-		$this->middleware('auth', ['only' => ['create', 'store']]);
+		$this->middleware('auth', ['except' => ['index']]);
 	}
 
 	/**
@@ -39,9 +44,12 @@ class PostCommentController extends Controller {
 	 *
 	 * @return Response
 	 */
-	public function create()
+	public function create($post_id)
 	{
-		return view('comments.create');
+
+		$langs = Lang::lists('name', 'name');
+
+		return view('comments.create', compact('post_id', 'langs'));
 	}
 
 	/**
@@ -49,9 +57,30 @@ class PostCommentController extends Controller {
 	 *
 	 * @return Response
 	 */
-	public function store()
+	public function store($postId, CommentRequest $request)
 	{
-		//
+		$post = Post::find($postId);
+
+		if(!is_null($post)) {
+
+			$comment = new Comment;
+
+			$comment->comment = $request->comment;
+			$comment->code = $request->code;
+			$comment->lang = $request->lang;
+			$comment->user_id = Auth::user()->getId();
+			$comment->post_id = $post->id;
+
+			$comment->save();
+
+			// // Redirect
+			Session::flash('message', 'Comment posted!');
+			return redirect(route('posts.show', [$post->id]));
+		} else {
+			Session::flash('info_message', 'Post does not exist!');
+			return redirect(route('posts.index'));
+		}
+
 	}
 
 	/**
@@ -71,9 +100,24 @@ class PostCommentController extends Controller {
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function edit($id)
+	public function edit($postId, $commentId)
 	{
-		//
+		$comment = Comment::find($commentId);
+		$langs = Lang::lists('name', 'name');
+
+		if ($comment) {
+
+			if ($comment->user_id == Auth::user()->getId()){
+				return view('comments.edit', compact('comment', 'postId', 'langs'));
+			} else {
+				Session::flash('info_message', 'You do not have that permission!');
+				return redirect(route('posts.show', [$postId]));
+			}
+
+		} else {
+			Session::flash('info_message', 'Not a valid comment');
+			return redirect(route('posts.show', [$postId]));
+		}
 	}
 
 	/**
@@ -82,9 +126,25 @@ class PostCommentController extends Controller {
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function update($id)
+	public function update($commentId, $postId, CommentRequest $request)
 	{
-		//
+		$comment = Comment::findOrFail($commentId);
+
+		if(Auth::user()->getId() == $comment->user_id) {
+			$comment->comment = $request->comment;
+			$comment->code = $request->code;
+			$comment->lang = $request->lang;
+
+			$comment->save();
+
+			// Redirect
+			Session::flash('message', 'Comment updated!');
+			return redirect(route('posts.show', [$postId]));
+		} else {
+			Session::flash('info_message', 'You do not have that permission!');
+			return redirect(route('posts.show', [$postId]));
+		}
+
 	}
 
 	/**

@@ -12,8 +12,16 @@
 			<div class="comment-container">
 				<p class="comment-para">{{ $comment->comment }}</p>
 
-				<pre><code class="language-{{$comment->lang}}">{{ $comment->code }}</code></pre>
-				<a class="pull-right" href="#">&#64;dave</a>
+				@if($comment->code)
+					<pre><code class="language-{{$comment->lang}}">{{ $comment->code }}</code></pre>
+				@endif
+				
+				<a class="btn btn-default pull-right" href="/users/{{$comment->post->username}}">&#64;dave</a>
+
+				@if ($comment->user_id == Auth::user()->getId())
+					<a class="btn btn-default" href="/posts/{{$post->id}}/comments/{{$comment->id}}/edit">Edit</a>
+				@endif
+
 				<div class="clear"></div>
 			</div>
 		@endforeach

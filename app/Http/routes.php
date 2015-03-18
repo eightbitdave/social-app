@@ -15,7 +15,7 @@ Route::get('posts/search', 'PostsController@search');
 Route::post('posts/search', ['as' => 'posts.search', 'uses' => 'PostsController@search']);
 Route::resource('posts', 'PostsController');
 
-// Post Comments
+
 Route::resource('posts.comments', 'PostCommentController');
 
 
@@ -49,4 +49,4 @@ Route::controllers([
 	'password' => 'Auth\PasswordController'
 ]);
 
-Route::post('auth/login', ['as' => 'auth.login', 'uses' => 'Auth\AuthController']);
+// Route::post('auth/login', ['as' => 'auth.login', 'uses' => 'Auth\AuthController']);
