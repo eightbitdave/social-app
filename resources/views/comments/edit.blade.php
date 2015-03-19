@@ -32,4 +32,12 @@
 		</div>
 	{!! Form::close() !!}
 
+	<br>
+
+	{!! Form::open(['method' => 'DELETE', 'route' => ['posts.comments.destroy', $comment->id, $postId]]) !!}
+		<div class="form-group">
+			{!! Form::submit('Delete Comment', ['class' => 'btn btn-block btn-danger']) !!}
+		</div>
+	{!! Form::close() !!}
+
 @stop

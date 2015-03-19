@@ -6,8 +6,14 @@
 
 	{{-- <pre><code class="language-{{$post->lang}}"></code></pre> TODO --}}
 
+	@if ($post->comments->count() == 1)
+		<br><h4>{{$post->comments->count()}} comment</h4>
+	@else
+		<br><h4>{{$post->comments->count()}} comments</h4>
+	@endif
+
+	<a class="btn btn-default btn-block" href="/posts/{{$post->id}}/comments/create">Create Comment</a><br>
 	@if(!$comments->isEmpty())
-		<br><h4>Comments:</h4>
 		@foreach($comments as $comment)
 			<div class="comment-container">
 				<p class="comment-para">{{ $comment->comment }}</p>
@@ -16,9 +22,9 @@
 					<pre><code class="language-{{$comment->lang}}">{{ $comment->code }}</code></pre>
 				@endif
 				
-				<a class="btn btn-default pull-right" href="/users/{{$comment->post->username}}">&#64;dave</a>
+				<a class="btn btn-default pull-right" href="/users/{{$comment->post->username}}">&#64;{{$comment->post->username}}</a>
 
-				@if ($comment->user_id == Auth::user()->getId())
+				@if (Auth::check() && Auth::user()->getId() == $comment->user_id)
 					<a class="btn btn-default" href="/posts/{{$post->id}}/comments/{{$comment->id}}/edit">Edit</a>
 				@endif
 

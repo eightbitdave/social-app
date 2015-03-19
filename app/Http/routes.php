@@ -49,4 +49,4 @@ Route::controllers([
 	'password' => 'Auth\PasswordController'
 ]);
 
-// Route::post('auth/login', ['as' => 'auth.login', 'uses' => 'Auth\AuthController']);
+Route::post('auth/login', ['as' => 'auth.login', 'uses' => 'Auth\AuthController']);

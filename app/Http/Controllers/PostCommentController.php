@@ -29,13 +29,12 @@ class PostCommentController extends Controller {
 	{
 		$post = Post::find($post_id);
 
-		$comments = $post->comments;
-
 		if ($post) {
+			$comments = $post->comments;
 			return view('comments.index', compact('post', 'comments'));
 		} else {
 			Session::flash('info_message', 'Invalid post!');
-			return rediret(route('posts.index'));
+			return redirect(route('posts.index'));
 		}
 	}
 
@@ -89,9 +88,9 @@ class PostCommentController extends Controller {
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function show($id)
+	public function show($post_id, $id)
 	{
-		//
+		return redirect(route('posts.show', [$post_id]));
 	}
 
 	/**
@@ -102,21 +101,29 @@ class PostCommentController extends Controller {
 	 */
 	public function edit($postId, $commentId)
 	{
-		$comment = Comment::find($commentId);
-		$langs = Lang::lists('name', 'name');
 
-		if ($comment) {
+		$post = Post::find($postId);
 
-			if ($comment->user_id == Auth::user()->getId()){
-				return view('comments.edit', compact('comment', 'postId', 'langs'));
+		if ($post){
+			$comment = Comment::find($commentId);
+			$langs = Lang::lists('name', 'name');
+
+			if ($comment) {
+
+				if ($comment->user_id == Auth::user()->getId()){
+					return view('comments.edit', compact('comment', 'postId', 'langs'));
+				} else {
+					Session::flash('info_message', 'You do not have that permission!');
+					return redirect(route('posts.show', [$postId]));
+				}
+
 			} else {
-				Session::flash('info_message', 'You do not have that permission!');
+				Session::flash('info_message', 'Not a valid comment');
 				return redirect(route('posts.show', [$postId]));
 			}
-
 		} else {
-			Session::flash('info_message', 'Not a valid comment');
-			return redirect(route('posts.show', [$postId]));
+			Session::flash('info_message', 'Not a valid post!');
+			return redirect(route('posts.index'));
 		}
 	}
 
@@ -153,9 +160,20 @@ class PostCommentController extends Controller {
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function destroy($id)
+	public function destroy($id, $post_id)
 	{
-		//
+		$comment = Comment::find($id);
+
+		if (Auth::user()->getId() == $comment->user_id) {
+			$comment->delete();
+
+			// Redirect
+			Session::flash('message', 'Comment deleted!');
+			return redirect(route('posts.show', [$post_id]));
+		} else {
+			Session::flash('info_message', 'You do not have that permission!');
+			return redirect(route('posts.show', [$post_id]));
+		}
 	}
 
 }

@@ -84,7 +84,11 @@ class PostsController extends Controller {
 	 */
 	public function show($id)
 	{
-		return view('posts.show', ['post' => Post::find($id)]);
+		$post =  Post::find($id);
+
+		$comments = $post->comments;
+
+		return view('posts.show', compact('post', 'comments'));
 	}
 
 	/**

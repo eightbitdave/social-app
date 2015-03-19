@@ -8,6 +8,11 @@
 		<h3>No user with that username.</h3>
 	@endif
 
+	@if ($user->id == Auth::user()->getId())
+		<a class="btn btn-default pull-right" href="/users/{{$user->username}}/edit">Edit details</a>
+		<div class="clear"></div>
+	@endif
+
 	@if (!$groups->isEmpty())
 		<h4>Groups I'm In:</h4>
 		@foreach($groups as $group)
