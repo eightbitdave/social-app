@@ -8,7 +8,7 @@
 		<h3>No user with that username.</h3>
 	@endif
 
-	@if ($user->id == Auth::user()->getId())
+	@if (Auth::check() && Auth::user()->getId() == $user->id)
 		<a class="btn btn-default pull-right" href="/users/{{$user->username}}/edit">Edit details</a>
 		<div class="clear"></div>
 	@endif

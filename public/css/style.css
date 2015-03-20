@@ -68,6 +68,16 @@ nav	{
 	padding-top: 10px;
 }
 
+.post-para {
+
+}
+
+h3.post-head {
+	font-size: 1.4em;
+	margin-top: 0 !important;
+	color: #666 ;
+}
+
 .message-alert {
 	margin: 0 15px 20px 15px;
 }

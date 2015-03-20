@@ -1,7 +1,7 @@
 <?php namespace App\Http\Controllers;
 
-use Session;
 use Auth;
+use Session;
 
 use App\Comment;
 use App\Lang;
@@ -46,9 +46,17 @@ class PostCommentController extends Controller {
 	public function create($post_id)
 	{
 
-		$langs = Lang::lists('name', 'name');
+		$post = Post::find($post_id);
 
-		return view('comments.create', compact('post_id', 'langs'));
+		if ($post) {
+			$langs = Lang::lists('name', 'name');
+			return view('comments.create', compact('post_id', 'langs'));
+		} else {
+			Session::flash('info_message', 'Post does not exist!');
+			return redirect(route('posts.index'));
+		}
+
+
 	}
 
 	/**

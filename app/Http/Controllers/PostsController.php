@@ -84,11 +84,17 @@ class PostsController extends Controller {
 	 */
 	public function show($id)
 	{
+
+
 		$post =  Post::find($id);
 
-		$comments = $post->comments;
-
-		return view('posts.show', compact('post', 'comments'));
+		if($post){
+			$comments = $post->comments;
+			return view('posts.show', compact('post', 'comments'));
+		} else {
+			Session::flash('info_message', 'Post does not exist!');
+			return redirect(route('posts.index'));
+		}
 	}
 
 	/**

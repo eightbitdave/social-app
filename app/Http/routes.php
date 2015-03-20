@@ -15,7 +15,7 @@ Route::get('posts/search', 'PostsController@search');
 Route::post('posts/search', ['as' => 'posts.search', 'uses' => 'PostsController@search']);
 Route::resource('posts', 'PostsController');
 
-
+// Nested Resource Route
 Route::resource('posts.comments', 'PostCommentController');
 
 
@@ -34,6 +34,9 @@ Route::get('groups/{id}/join', 'GroupsController@join');
 Route::get('groups/search', 'GroupsController@search');
 Route::post('groups/search', ['as' => 'groups.search', 'uses' => 'GroupsController@search']);
 Route::resource('groups', 'GroupsController');
+
+// Nested Resource Route
+Route::resource('groups.posts', 'GroupPostController');
 
 
 

@@ -35,4 +35,13 @@ class Group extends Model {
 		return $this->belongsToMany('App\User')->withTimestamps();
 	}
 
+	/**
+	 * Get the posts associated with the given group.
+	 * @return Response
+	 */
+	public function posts()
+	{
+		return $this->hasMany('App\GroupPost');
+	}
+
 }
