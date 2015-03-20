@@ -26,7 +26,7 @@
 		@foreach ($posts as $post)
 			<a class="btn btn-default btn-block" href="/posts/{{$post->id}}">{{ $post->title }}</a>
 		@endforeach
-		@if (count($posts) == 5)
+		@if (count($posts) >= 5)
 			<br><a class="btn btn-default btn-block" href="/users/{{$user->username}}/posts">All Posts</a>
 		@endif
 	@else

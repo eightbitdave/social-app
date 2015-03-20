@@ -1,6 +1,7 @@
 <?php namespace App\Http\Controllers;
 
 use Auth;
+use DB;
 use Session;
 
 use App\Lang;
@@ -14,6 +15,11 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Request;
 
 class GroupPostController extends Controller {
+
+	public function __construct()
+	{
+		$this->middleware('auth', ['except' => ['index']]);
+	}
 
 	/**
 	 * Display a listing of the resource.
@@ -43,8 +49,19 @@ class GroupPostController extends Controller {
 		$group = Group::find($group_id);
 
 		if($group) {
-			$langs = Lang::lists('name', 'name');
-			return view('group_posts.create', compact('group', 'langs'));
+
+			$user_id = Auth::user()->getId();
+			$userJoined = DB::select("select user_id from group_user where user_id = $user_id and group_id = $group_id");
+
+			if (!empty($userJoined)) {
+
+				$langs = Lang::lists('name', 'name');
+				return view('group_posts.create', compact('group', 'langs'));
+
+			} else {
+				Session::flash('info_message', 'You need to be a member of the group to make a post!');
+				return redirect(route('groups.show', [$group->id]));
+			}
 		} else {
 			Session::flash('info_message', 'Group does not exist.');
 			return view('groups.index');
@@ -62,20 +79,30 @@ class GroupPostController extends Controller {
 
 		if(!is_null($group)) {
 
-			$post = new GroupPost;
+			$user_id = Auth::user()->getId();
+			$userJoined = DB::select("select user_id from group_user where user_id = $user_id and group_id = $group_id");
 
-			$post->title = $request->title;
-			$post->content = $request->content;
-			$post->code = $request->code;
-			$post->lang = $request->lang;
-			$post->user_id = Auth::user()->getId();
-			$post->group_id = $group->id;
+			if (!empty($userJoined)) {
 
-			$post->save();
+				$post = new GroupPost;
 
-			// Redirect
-			Session::flash('message', 'Post created!');
-			return redirect(route('groups.show', [$group->id]));
+				$post->title = $request->title;
+				$post->content = $request->content;
+				$post->code = $request->code;
+				$post->lang = $request->lang;
+				$post->user_id = Auth::user()->getId();
+				$post->group_id = $group->id;
+
+				$post->save();
+
+				// Redirect
+				Session::flash('message', 'Post created!');
+				return redirect(route('groups.show', [$group->id]));
+
+			} else {
+				Session::flash('info_message', 'You need to be a member of the group to make a post!');
+				return redirect(route('groups.show', [$group->id]));
+			}
 
 		} else {
 			Session::flash('info_message', 'Group does not exist!');
@@ -89,9 +116,9 @@ class GroupPostController extends Controller {
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function show($id)
+	public function show($group_id, $id)
 	{
-		//
+		return redirect(route('groups.show', [$group_id]));
 	}
 
 	/**
@@ -100,9 +127,42 @@ class GroupPostController extends Controller {
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function edit($id)
+	public function edit($group_id, $post_id)
 	{
-		//
+		$group = Group::find($group_id);
+
+		if ($group) {
+
+			$user_id = Auth::user()->getId();
+			$userJoined = DB::select("select user_id from group_user where user_id = $user_id and group_id = $group_id");
+
+			if (!empty($userJoined)) {
+
+				$post = GroupPost::find($post_id);
+
+				if ($post) {
+					$langs = Lang::lists('name', 'name');
+
+					if ($post->user_id == Auth::user()->getId()) {
+						return view('group_posts.edit', compact('group_id', 'post', 'langs'));
+					} else {
+						Session::flash('info_message', 'You do not have that permission!');
+						return redirect(route('groups.show', [$group->id]));
+					}
+				} else {
+					Session::flash('info_message', 'Not a valid post!');
+					return redirect(route('groups.show', [$group->id]));
+				}
+
+			} else {
+				Session::flash('info_message', 'You need to be a member of the group to make a post!');
+				return redirect(route('groups.show', [$group->id]));
+			}
+
+		} else {
+			Session::flash('info_message', 'Not a valid group!');
+			return redirect(route('groups.index'));
+		}
 	}
 
 	/**
@@ -111,9 +171,25 @@ class GroupPostController extends Controller {
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function update($id)
+	public function update($post_id, $group_id, GroupPostRequest $request)
 	{
-		//
+		$post = GroupPost::findOrFail($post_id);
+
+		if (Auth::user()->getId() == $post->user_id) {
+			$post->title = $request->title;
+			$post->content = $request->content;
+			$post->code = $request->code;
+			$post->lang = $request->lang;
+
+			$post->save();
+
+			// Redirect
+			Session::flash('message', 'Post updated!');
+			return redirect(route('groups.show', [$group_id]));
+		} else {
+			Session::flash('info_message', 'You do not have that permission!');
+			return redirect(route('posts.show', [$postId]));
+		}
 	}
 
 	/**
@@ -122,9 +198,21 @@ class GroupPostController extends Controller {
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function destroy($id)
+	public function destroy($id, $group_id)
 	{
-		//
+		$post = GroupPost::findOrFail($id);
+
+		if (Auth::user()->getId() == $post->user_id) {
+
+			$post->delete();
+
+			// Redirect
+			Session::flash('message', 'Post deleted!');
+			return redirect(route('groups.show', [$group_id]));
+		} else {
+			Session::flash('info_message', 'You do not have that permission!');
+			return redirect(route('groups.show', [$group_id]));
+		}
 	}
 
 }

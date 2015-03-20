@@ -21,6 +21,8 @@ Route::resource('posts.comments', 'PostCommentController');
 
 // Group Routes
 
+# TODO: add groups/members route!
+
 // Leaving Group Routes
 Route::get('groups/{id}/leave', ['as' => 'groups.destroyMember', 'uses' => 'GroupsController@leave']);
 Route::delete('groups/{id}/leave', 'GroupsController@destroyMember');

@@ -109,7 +109,6 @@ class PostCommentController extends Controller {
 	 */
 	public function edit($postId, $commentId)
 	{
-
 		$post = Post::find($postId);
 
 		if ($post){
@@ -173,6 +172,7 @@ class PostCommentController extends Controller {
 		$comment = Comment::find($id);
 
 		if (Auth::user()->getId() == $comment->user_id) {
+			
 			$comment->delete();
 
 			// Redirect

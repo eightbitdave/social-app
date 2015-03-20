@@ -84,19 +84,22 @@ class GroupsController extends Controller {
 			$isJoined = false;
 
 			if (Auth::check()) {
-			$user_id = Auth::user()->getId();
+				$user_id = Auth::user()->getId();
 
-			$userJoined = DB::select("select user_id from group_user where user_id = $user_id and group_id = " . $group->id);
+				$userJoined = DB::select("select user_id from group_user where user_id = $user_id and group_id = " . $group->id);
 
-			if (!empty($userJoined)) {
-				$isJoined = true;
+				if (!empty($userJoined)) {
+					$isJoined = true;
+				}
 			}
-		}
 
-			$members = $group->users;
+			$posts = $group->posts()->orderBy('updated_at', 'desc')->limit(5)->get();
+
+			$members = $group->users()->where('group_id', '=', $group->id)->orderBy('created_at', 'asc')->limit(5)->get();
+
 			$tag = $group->tag;
 
-			return view('groups.show', compact('group', 'tag', 'members', 'isJoined'));
+			return view('groups.show', compact('group', 'tag', 'members', 'isJoined', 'posts'));
 
 		} else {
 			Session::flash('info_message', 'That group does not exist');
