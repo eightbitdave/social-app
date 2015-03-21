@@ -1,5 +1,7 @@
 <?php namespace App;
 
+
+use DB;
 use Illuminate\Database\Eloquent\Model;
 
 class Group extends Model {
@@ -42,6 +44,17 @@ class Group extends Model {
 	public function posts()
 	{
 		return $this->hasMany('App\GroupPost');
+	}
+
+	public function isUserMember($group, $user_id)
+	{
+		$isJoined = DB::select("select user_id from group_user where user_id = $user_id and group_id = $group->id");
+
+		if (!empty($isJoined)) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 }

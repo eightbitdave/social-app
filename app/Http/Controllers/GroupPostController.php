@@ -50,10 +50,7 @@ class GroupPostController extends Controller {
 
 		if($group) {
 
-			$user_id = Auth::user()->getId();
-			$userJoined = DB::select("select user_id from group_user where user_id = $user_id and group_id = $group_id");
-
-			if (!empty($userJoined)) {
+			if ($group->isUserMember($group, Auth::user()->getId())) {
 
 				$langs = Lang::lists('name', 'name');
 				return view('group_posts.create', compact('group', 'langs'));
@@ -79,10 +76,7 @@ class GroupPostController extends Controller {
 
 		if(!is_null($group)) {
 
-			$user_id = Auth::user()->getId();
-			$userJoined = DB::select("select user_id from group_user where user_id = $user_id and group_id = $group_id");
-
-			if (!empty($userJoined)) {
+			if ($group->isUserMember($group, Auth::user()->getId())) {
 
 				$post = new GroupPost;
 
@@ -132,12 +126,9 @@ class GroupPostController extends Controller {
 		$group = Group::find($group_id);
 
 		if ($group) {
-
-			$user_id = Auth::user()->getId();
-			$userJoined = DB::select("select user_id from group_user where user_id = $user_id and group_id = $group_id");
-
-			if (!empty($userJoined)) {
-
+			
+			if($group->isUserMember($group, Auth::user()->getId())) {
+				
 				$post = GroupPost::find($post_id);
 
 				if ($post) {
