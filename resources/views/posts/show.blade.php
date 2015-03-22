@@ -31,7 +31,7 @@
 						<pre><code class="language-{{$comment->lang}}">{{ $comment->code }}</code></pre>
 					@endif
 					
-					<a class="btn btn-default pull-right" href="/users/{{$comment->post->username}}">&#64;{{$comment->post->username}}</a>
+					<a class="btn btn-default pull-right" href="/users/{{$comment->username}}">&#64;{{$comment->username}}</a>
 
 					@if (Auth::check() && Auth::user()->getId() == $comment->user_id)
 						<a class="btn btn-default" href="/posts/{{$post->id}}/comments/{{$comment->id}}/edit">Edit</a>

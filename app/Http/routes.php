@@ -1,8 +1,11 @@
 <?php
 
-// Home&Welcome Controllers
-Route::get('/', 'WelcomeController@index');
-Route::get('home', 'HomeController@index');
+
+// Route::get('home', 'HomeController@index');
+
+Route::get('/', 'PagesController@home');
+Route::get('/home', 'PagesController@home');
+Route::get('dashboard', ['middleware' => 'auth', 'uses' => 'PagesController@dashboard']);
 
 
 // User Routes
@@ -22,6 +25,9 @@ Route::resource('posts.comments', 'PostCommentController');
 // Group Routes
 
 # TODO: add groups/members route!
+
+// Show All Group Members
+Route::get('groups/{id}/members', 'GroupsController@showMembers');
 
 // Leaving Group Routes
 Route::get('groups/{id}/leave', ['as' => 'groups.destroyMember', 'uses' => 'GroupsController@leave']);

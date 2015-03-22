@@ -29,6 +29,8 @@ class PostCommentController extends Controller {
 	{
 		$post = Post::find($post_id);
 
+
+
 		if ($post) {
 			$comments = $post->comments;
 			return view('comments.index', compact('post', 'comments'));
@@ -77,6 +79,7 @@ class PostCommentController extends Controller {
 			$comment->lang = $request->lang;
 			$comment->user_id = Auth::user()->getId();
 			$comment->post_id = $post->id;
+			$comment->username = Auth::user()->getUsername();
 
 			$comment->save();
 

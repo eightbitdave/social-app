@@ -19,7 +19,7 @@ class GroupsController extends Controller {
 	 */
 	public function __construct()
 	{
-		$this->middleware('auth', ['except' => ['index', 'show', 'search', 'tags', 'showTag']]);
+		$this->middleware('auth', ['except' => ['index', 'show', 'search', 'tags', 'showTag', 'showMembers']]);
 	}
 
 	/**
@@ -105,6 +105,15 @@ class GroupsController extends Controller {
 			Session::flash('info_message', 'That group does not exist');
 			return redirect(route('groups.index'));
 		}
+	}
+
+	public function showMembers($id)
+	{
+		$group = Group::findOrFail($id);
+
+		$members = $group->users()->where('group_id', '=', $group->id)->orderBy('created_at', 'asc')->get();
+
+		return view('groups.members', compact('group', 'members'));
 	}
 
 	/**
