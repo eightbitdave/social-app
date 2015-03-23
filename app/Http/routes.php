@@ -2,9 +2,9 @@
 
 # Approved
 
-// Route::get('/auth/register', function(){
-// 	return redirect(route('users.create'));
-// });
+Route::get('/auth/register', function(){
+	return redirect(route('users.create'));
+});
 
 
 # Static Pages Routes

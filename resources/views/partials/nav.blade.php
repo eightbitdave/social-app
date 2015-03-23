@@ -24,12 +24,16 @@
 
       </ul>
 
-      <form class="navbar-form navbar-left">
-        <ul class="nav navbar-nav navbar-right">
-        	<li><a href="/posts">Posts</a></li>
-          <li><a href="/groups">Groups</a></li>
-        </ul>
-      </form>
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="/posts">Posts</a></li>
+        <li><a href="/groups">Groups</a></li>
+
+        @if (Auth::check())
+          <li><a href="/auth/logout">Logout</a>
+        @else
+          <li><a href="/auth/login">Login</a>
+        @endif
+      </ul>
     </div><!-- /.navbar-collapse -->
   </div><!-- /.container-fluid -->
 </nav>

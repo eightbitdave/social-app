@@ -30,6 +30,8 @@
 
 			{!! Form::submit('Log in', ['class' => 'form-button btn']) !!}
 			<a class="btn pull-right" href="/auth/password">Forgot your password?</a>
+			<br><br>
+			<a class="btn btn-block form-button" href="/users/create">Need to register?</a>
 		</div>
 	{!! Form::close() !!}
 @stop
