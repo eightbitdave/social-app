@@ -21,8 +21,13 @@
 		<br>
 	@endif
 
+	@if(Auth::check() && Auth::user()->getId() == $user->id)
+		<br><a class="btn btn-block btn-default" href="/posts/create">Create a Post</a>
+	@endif
+	<h4>My Recent Posts:</h4>
+
+
 	@if ($posts)
-		<h4>My Recent Posts:</h4>
 		@foreach ($posts as $post)
 			<a class="btn btn-default btn-block" href="/posts/{{$post->id}}">{{ $post->title }}</a>
 		@endforeach
@@ -30,7 +35,7 @@
 			<br><a class="btn btn-default btn-block" href="/users/{{$user->username}}/posts">All Posts</a>
 		@endif
 	@else
-		<h4>This user has no posts!</h4>
+		<p class="comment-para">This user has no posts!</p>
 	@endif
 
 @stop

@@ -46,6 +46,12 @@ class Group extends Model {
 		return $this->hasMany('App\GroupPost');
 	}
 
+
+	/**
+	 * Determine if the given user has joined the given group.
+	 *
+	 * @return Response
+	 */
 	public function isUserMember($group, $user_id)
 	{
 		$isJoined = DB::select("select user_id from group_user where user_id = $user_id and group_id = $group->id");

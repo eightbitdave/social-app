@@ -1,39 +1,36 @@
 <?php
 
-
-// Route::get('home', 'HomeController@index');
+# Approved
 
 Route::get('/', 'PagesController@home');
 Route::get('/home', 'PagesController@home');
 Route::get('dashboard', ['middleware' => 'auth', 'uses' => 'PagesController@dashboard']);
 
 
-// User Routes
+# User Routes
 Route::get('users/{username}/posts', 'UsersController@showPosts');
 Route::resource('users', 'UsersController');
 
 
-// Post Routes
+# Post Routes
 Route::get('posts/search', 'PostsController@search');
 Route::post('posts/search', ['as' => 'posts.search', 'uses' => 'PostsController@search']);
 Route::resource('posts', 'PostsController');
 
-// Nested Resource Route
+/* Nested Resource Route */
 Route::resource('posts.comments', 'PostCommentController');
 
 
-// Group Routes
+# Group Routes
 
-# TODO: add groups/members route!
-
-// Show All Group Members
+/* Show All Group Members */
 Route::get('groups/{id}/members', 'GroupsController@showMembers');
 
-// Leaving Group Routes
+/* Leaving Group Routes */
 Route::get('groups/{id}/leave', ['as' => 'groups.destroyMember', 'uses' => 'GroupsController@leave']);
 Route::delete('groups/{id}/leave', 'GroupsController@destroyMember');
 
-// Group Tag Routes
+/* Group Tag Routes */
 Route::get('groups/tags', 'GroupsController@tags');
 Route::get('groups/tag/{tag}', 'GroupsController@showTag');
 
@@ -45,7 +42,6 @@ Route::resource('groups', 'GroupsController');
 
 // Nested Resource Route
 Route::resource('groups.posts', 'GroupPostController');
-
 
 
 
