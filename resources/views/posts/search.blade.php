@@ -37,7 +37,7 @@
 		</div>
 	@elseif (isset($results) && empty($results))
 		<div class="alert alert-danger" role="alert">
-			<strong>Oops!</strong> That search term didn't return anything, awkward.
+			<strong>Oops!</strong> That search term didn't return anything.
    		</div>
 	@endif
 

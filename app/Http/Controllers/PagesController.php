@@ -1,5 +1,7 @@
 <?php namespace App\Http\Controllers;
 
+use Auth;
+
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
@@ -14,7 +16,12 @@ class PagesController extends Controller {
 	
 	public function home()
 	{
-		return view('pages.home');
+
+		if (Auth::guest()){
+			return view('pages.home');
+		} else {
+			return redirect('/dashboard');
+		}
 	}
 
 	public function about()

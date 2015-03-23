@@ -24,8 +24,8 @@
 	@if(Auth::check() && Auth::user()->getId() == $user->id)
 		<br><a class="btn btn-block btn-default" href="/posts/create">Create a Post</a>
 	@endif
-	<h4>My Recent Posts:</h4>
 
+	<br><h4>My Recent Posts:</h4>
 
 	@if ($posts)
 		@foreach ($posts as $post)

@@ -2,10 +2,16 @@
 
 # Approved
 
-Route::get('/', 'PagesController@home');
-Route::get('/home', 'PagesController@home');
-Route::get('dashboard', ['middleware' => 'auth', 'uses' => 'PagesController@dashboard']);
+// Route::get('/auth/register', function(){
+// 	return redirect(route('users.create'));
+// });
 
+
+# Static Pages Routes
+Route::get('/', 'PagesController@home');
+Route::get('home', 'PagesController@home');
+Route::get('dashboard', ['middleware' => 'auth', 'uses' => 'PagesController@dashboard']);
+Route::get('about', 'PagesController@about');
 
 # User Routes
 Route::get('users/{username}/posts', 'UsersController@showPosts');
