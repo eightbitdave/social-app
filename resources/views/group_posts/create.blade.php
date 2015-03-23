@@ -24,7 +24,7 @@
 
 			<div class="form-group">
 				{!! Form::label('', "", []) !!}
-				{!! Form::textarea('code', "", ['class' => 'form-control', 'placeholder' => 'Write any code here', 'minlength' => '3']) !!}
+				{!! Form::textarea('code', "", ['class' => 'form-control', 'placeholder' => 'Write any code here (you can leave this blank)', 'minlength' => '3']) !!}
 			</div>
 
 			<div class="form-group form-last">
